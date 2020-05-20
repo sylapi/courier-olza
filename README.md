@@ -1,6 +1,6 @@
-# Sylapi/Courier-olza
+# sylapi/courier-olza
 
-**Courier library**
+[![StyleCI](https://github.styleci.io/repos/261400599/shield?branch=master)](https://github.styleci.io/repos/261400599)
 
 ## Installation
 
