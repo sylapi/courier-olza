@@ -1,34 +1,32 @@
 <?php
+
 namespace Sylapi\Courier\Olza;
 
 use Sylapi\Courier\Olza\Message\createShipment;
 use Sylapi\Courier\Olza\Message\getLabel;
-use Sylapi\Courier\Olza\Message\getTracking;
 use Sylapi\Courier\Olza\Message\getManifest;
+use Sylapi\Courier\Olza\Message\getTracking;
 
 class Olza extends Connect
 {
     protected $session;
     protected $auth;
 
-    public function initialize($parameters) {
-
+    public function initialize($parameters)
+    {
         $this->parameters = $parameters;
 
         if (!empty($parameters['accessData'])) {
-
             $this->setLogin($parameters['accessData']['login']);
             $this->setPassword($parameters['accessData']['password']);
-        }
-        else {
+        } else {
             $this->setError('Access Data is empty');
         }
     }
 
-    public function login() {
-
+    public function login()
+    {
         if (empty($this->client)) {
-
             $options = [];
 
             $this->client = new \SoapClient($this->getApiUri(), $options);
@@ -40,14 +38,13 @@ class Olza extends Connect
         return false;
     }
 
-    public function ValidateData() {
-
+    public function ValidateData()
+    {
         $this->setResponse(['result' => true]);
     }
 
-
-    public function CreatePackage() {
-
+    public function CreatePackage()
+    {
         $this->login();
 
         $createShipment = new createShipment();
@@ -59,14 +56,13 @@ class Olza extends Connect
         $this->setError($createShipment->getError());
     }
 
-    public function GetParcel() {
-
+    public function GetParcel()
+    {
         $this->login();
 
         if (!empty($this->parameters['custom_id'])) {
-
             $getTracking = new getTracking();
-           // $getTracking = new getManifest();
+            // $getTracking = new getManifest();
             $getTracking->prepareData($this->parameters)->send($this->client);
 
             $this->setResponse($getTracking->getResponse());
@@ -74,18 +70,17 @@ class Olza extends Connect
         }
     }
 
-    public function CheckPrice() {
-
+    public function CheckPrice()
+    {
         $response = (isset($this->parameters['options']['custom']['parcel_cost'])) ? $this->parameters['options']['custom']['parcel_cost'] : 0;
         $this->setResponse($response);
     }
 
-    public function GetLabel() {
-
+    public function GetLabel()
+    {
         $this->login();
 
         if (!empty($this->parameters['custom_id'])) {
-
             $getLabel = new getLabel();
             $getLabel->prepareData($this->parameters)->send($this->client);
 
