@@ -11,6 +11,7 @@ abstract class Connect
     protected $session;
     protected $token;
     protected $login;
+    protected $password;
     protected $parameters;
     protected $error;
     protected $response;
@@ -27,6 +28,10 @@ abstract class Connect
 
     protected function setToken($token) {
         return $this->token = $token;
+    }
+
+    protected function setPassword($password) {
+        return $this->password = $password;
     }
 
     public function getApiUri() {

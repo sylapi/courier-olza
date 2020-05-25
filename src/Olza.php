@@ -4,10 +4,12 @@ namespace Sylapi\Courier\Olza;
 use Sylapi\Courier\Olza\Message\createShipment;
 use Sylapi\Courier\Olza\Message\getLabel;
 use Sylapi\Courier\Olza\Message\getTracking;
+use Sylapi\Courier\Olza\Message\getManifest;
 
 class Olza extends Connect
 {
     protected $session;
+    protected $auth;
 
     public function initialize($parameters) {
 
@@ -15,7 +17,7 @@ class Olza extends Connect
 
         if (!empty($parameters['accessData'])) {
 
-            $this->setToken($parameters['accessData']['token']);
+            $this->setLogin($parameters['accessData']['login']);
             $this->setPassword($parameters['accessData']['password']);
         }
         else {
@@ -27,7 +29,7 @@ class Olza extends Connect
 
         if (empty($this->client)) {
 
-            $options['token'] = $this->token;
+            $options = [];
 
             $this->client = new \SoapClient($this->getApiUri(), $options);
 
@@ -49,7 +51,7 @@ class Olza extends Connect
         $this->login();
 
         $createShipment = new createShipment();
-        $createShipment->prepareData($this->parameters)->call($this->client);
+        $createShipment->prepareData($this->parameters)->send($this->client);
 
         $response = $createShipment->getResponse();
 
@@ -57,14 +59,14 @@ class Olza extends Connect
         $this->setError($createShipment->getError());
     }
 
-    public function GetPackage() {
+    public function GetParcel() {
 
         $this->login();
 
-        if (empty($this->parameters['custom_id'])) {
+        if (!empty($this->parameters['custom_id'])) {
 
             $getTracking = new getTracking();
-            $getTracking->prepareData($this->parameters)->call($this->client);
+            $getTracking->prepareData($this->parameters)->send($this->client);
 
             $this->setResponse($getTracking->getResponse());
             $this->setError($getTracking->getError());
@@ -81,10 +83,10 @@ class Olza extends Connect
 
         $this->login();
 
-        if (empty($this->parameters['custom_id'])) {
+        if (!empty($this->parameters['custom_id'])) {
 
             $getLabel = new getLabel();
-            $getLabel->prepareData($this->parameters)->call($this->client);
+            $getLabel->prepareData($this->parameters)->send($this->client);
 
             $this->setResponse($getLabel->getResponse());
             $this->setError($getLabel->getError());
