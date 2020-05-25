@@ -66,6 +66,7 @@ class Olza extends Connect
         if (!empty($this->parameters['custom_id'])) {
 
             $getTracking = new getTracking();
+           // $getTracking = new getManifest();
             $getTracking->prepareData($this->parameters)->send($this->client);
 
             $this->setResponse($getTracking->getResponse());

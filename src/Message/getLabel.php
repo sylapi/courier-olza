@@ -1,4 +1,5 @@
 <?php
+
 namespace Sylapi\Courier\Olza\Message;
 
 class getLabel
@@ -18,8 +19,8 @@ class getLabel
                 'RequestedLabels' => [
                     'PackagesByCarrier' => [
 
-                        'Carrier' => 'dpd',
-                        'PackageNo' => $data['custom_id']
+                            'Carrier' => 'dpd',
+                            'PackageNo' => [$data['custom_id']]
 
                     ],
                 ],
@@ -34,8 +35,9 @@ class getLabel
 
         try {
 
+            pr($this->data);
             $result = $client->GetLabel($this->data);
-
+pr($result);
             if (isset($result->PackageNo)) {
 
                 $this->response['return'] = [
@@ -50,7 +52,7 @@ class getLabel
             }
         }
         catch (\SoapFault $e) {
-
+pr($e);
             $this->response['error'] = $e->faultactor.' | '.$e->faultstring;
             $this->response['code'] = $e->faultcode.'';
         }

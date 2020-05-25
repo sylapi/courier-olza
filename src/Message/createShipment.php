@@ -41,8 +41,10 @@ class createShipment
                     'City' => $data['sender']['city'],
                     'PostCode' => $data['sender']['postcode'],
                     'CountryCode' => $data['sender']['country'],
-                    'IsPrivatePerson' => true,
-                    'PostOfficeId' => ''
+                    'Nip' => $data['sender']['nip'],
+                    'IsPrivatePerson' => false,
+                    'PostOfficeId' => '',
+                    'PointType' => '',
                 ],
                 'Parcels' => [
                     [

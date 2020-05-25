@@ -7,7 +7,7 @@
         "olza",
         "shipping"
     ],
-    "homepage": "https://bitbucket.org/sylapi/courier-olza",
+    "homepage": "https://github.com/sylapi/courier-olza",
     "license": "MIT",
     "authors": [
         {
@@ -15,11 +15,11 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.2.0",
         "sylapi/courier": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.3"
+        "phpunit/phpunit": "^8.5"
     },
     "autoload": {
         "psr-4": { "Sylapi\\Courier\\Olza\\" : "src/" }

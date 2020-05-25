@@ -26,10 +26,6 @@ abstract class Connect
         return $this->login = $login;
     }
 
-    protected function setToken($token) {
-        return $this->token = $token;
-    }
-
     protected function setPassword($password) {
         return $this->password = $password;
     }
