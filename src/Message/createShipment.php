@@ -1,9 +1,9 @@
 <?php
+
 namespace Sylapi\Courier\Olza\Message;
 
 /**
- * Class createShipment
- * @package Sylapi\Courier\Olza\Message
+ * Class createShipment.
  */
 class createShipment
 {
@@ -18,10 +18,11 @@ class createShipment
 
     /**
      * @param array $data
+     *
      * @return $this
      */
-    public function prepareData($data=[]) {
-
+    public function prepareData($data = [])
+    {
         $this->data = [
             'token' => [
                 'UserName' => $data['accessData']['login'],
@@ -29,56 +30,54 @@ class createShipment
             ],
             'createShipmentRequest' => [
                 'ServiceId' => $data['provider'],
-                'ShipFrom' => [
-                    'PointId' => '',
-                    'PointType' => 'WAREHOUSE',
-                    'Email' => $data['sender']['email'],
-                    'Contact' => $data['sender']['phone'],
-                    'Name' => $data['sender']['name'],
-                    'Person' => $data['sender']['name'],
-                    'Address' => $data['sender']['street'],
-                    'City' => $data['sender']['city'],
-                    'PostCode' => $data['sender']['postcode'],
-                    'CountryCode' => $data['sender']['country'],
-                    'Nip' => $data['sender']['nip'],
+                'ShipFrom'  => [
+                    'PointId'         => '',
+                    'PointType'       => 'WAREHOUSE',
+                    'Email'           => $data['sender']['email'],
+                    'Contact'         => $data['sender']['phone'],
+                    'Name'            => $data['sender']['name'],
+                    'Person'          => $data['sender']['name'],
+                    'Address'         => $data['sender']['street'],
+                    'City'            => $data['sender']['city'],
+                    'PostCode'        => $data['sender']['postcode'],
+                    'CountryCode'     => $data['sender']['country'],
+                    'Nip'             => $data['sender']['nip'],
                     'IsPrivatePerson' => false,
-                    'PostOfficeId' => '',
-                    'PickupPlaceId' => ''
+                    'PostOfficeId'    => '',
+                    'PickupPlaceId'   => '',
                 ],
                 'ShipTo' => [
-                    'PointId' => '',
-                    'PointType' => '',
-                    'Email' => $data['receiver']['email'],
-                    'Contact' => $data['receiver']['phone'],
-                    'Name' => $data['receiver']['name'],
-                    'Person' => $data['receiver']['name'],
-                    'Address' => $data['receiver']['street'],
-                    'City' => $data['receiver']['city'],
-                    'PostCode' => $data['receiver']['postcode'],
-                    'CountryCode' => $data['receiver']['country'],
+                    'PointId'         => '',
+                    'PointType'       => '',
+                    'Email'           => $data['receiver']['email'],
+                    'Contact'         => $data['receiver']['phone'],
+                    'Name'            => $data['receiver']['name'],
+                    'Person'          => $data['receiver']['name'],
+                    'Address'         => $data['receiver']['street'],
+                    'City'            => $data['receiver']['city'],
+                    'PostCode'        => $data['receiver']['postcode'],
+                    'CountryCode'     => $data['receiver']['country'],
                     'IsPrivatePerson' => false,
-                    'PostOfficeId' => ''
+                    'PostOfficeId'    => '',
                 ],
                 'Parcels' => [
                     [
-                        'Type' => 'Package',
-                        'IsNST' => false,
-                        'Weight' => $data['options']['weight'],
-                        'PickupPlaceId' => 1
-                    ]
+                        'Type'          => 'Package',
+                        'IsNST'         => false,
+                        'Weight'        => $data['options']['weight'],
+                        'PickupPlaceId' => 1,
+                    ],
                 ],
-                'ReferenceNumber' => $data['options']['references'],
+                'ReferenceNumber'    => $data['options']['references'],
                 'ContentDescription' => $data['options']['note'],
-                'LabelFormat' => 'PDF',
-                'RebateCoupon' => '',
-                'MPK' => '',
-            ]
+                'LabelFormat'        => 'PDF',
+                'RebateCoupon'       => '',
+                'MPK'                => '',
+            ],
         ];
 
         if (in_array($data['provider'], [1])) {
-
-            foreach($this->data['createShipmentRequest']['Parcels'] as &$parcel) {
-
+            foreach ($this->data['createShipmentRequest']['Parcels'] as &$parcel) {
                 $parcel['D'] = $data['options']['depth'];
                 $parcel['W'] = $data['options']['width'];
                 $parcel['S'] = $data['options']['height'];
@@ -96,10 +95,9 @@ class createShipment
         }
 
         if ($data['options']['cod'] == true) {
-
             $this->data['COD'] = [
-                'Amount' => $data['options']['amount'],
-                'Currency' => (!empty($data['options']['currency'])) ? $data['options']['currency'] : 'PLN',
+                'Amount'       => $data['options']['amount'],
+                'Currency'     => (!empty($data['options']['currency'])) ? $data['options']['currency'] : 'PLN',
                 'RetAccountNo' => (!empty($data['options']['bank_number'])) ? $data['options']['bank_number'] : '',
             ];
         }
@@ -109,7 +107,6 @@ class createShipment
         }
 
         if ($this->data['createShipmentRequest']['ShipFrom']['CountryCode'] != $this->data['createShipmentRequest']['ShipTo']['CountryCode']) {
-
             $this->data['createShipmentRequest']['ShipFrom']['CountryCode'] = $this->data['createShipmentRequest']['ShipTo']['CountryCode'];
         }
 
@@ -119,30 +116,24 @@ class createShipment
     /**
      * @param $client
      */
-    public function send($client) {
-
+    public function send($client)
+    {
         try {
-
             $this->data['ShipmentRequest'] = json_encode($this->data['ShipmentRequest']);
 
             $result = $client->CreateShipment($this->data);
             if (isset($result->CreateShipmentResult->PackageNo)) {
-
                 $this->response['return'] = [
-                    'status' => $result->CreateShipmentResult->responseDescription.'',
-                    'custom_id' => $result->CreateShipmentResult->PackageNo.'',
+                    'status'      => $result->CreateShipmentResult->responseDescription.'',
+                    'custom_id'   => $result->CreateShipmentResult->PackageNo.'',
                     'tracking_id' => '',
-                    'price' => 0
+                    'price'       => 0,
                 ];
-            }
-            else {
-
+            } else {
                 $this->response['error'] = $result->CreateShipmentResult->responseDescription.'';
                 $this->response['code'] = $result->CreateShipmentResult->responseCode.'';
             }
-        }
-        catch (\SoapFault $e) {
-
+        } catch (\SoapFault $e) {
             $this->response['error'] = $e->faultactor.' | '.$e->faultstring;
             $this->response['code'] = $e->faultcode.'';
         }
@@ -151,27 +142,32 @@ class createShipment
     /**
      * @return |null
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         if ($this->isSuccess() == true) {
             return $this->response['return'];
         }
+
         return null;
     }
 
     /**
      * @return bool
      */
-    public function isSuccess() {
+    public function isSuccess()
+    {
         if (isset($this->response['return']['status']) && $this->response['return']['status'] == 'Success') {
             return true;
         }
+
         return false;
     }
 
     /**
      * @return string|null
      */
-    public function getError() {
+    public function getError()
+    {
         if (!empty($this->response['error'])) {
             $error = $this->response['code'].': '.$this->response['error'];
 
@@ -184,7 +180,8 @@ class createShipment
     /**
      * @return int
      */
-    public function getCode() {
+    public function getCode()
+    {
         return (!empty($this->response['code'])) ? $this->response['code'] : 0;
     }
 }
