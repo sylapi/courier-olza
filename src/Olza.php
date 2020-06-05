@@ -92,7 +92,6 @@ class Olza extends Connect
         $getAvailableServices->send($this);
 
         if ($getAvailableServices->isSuccess()) {
-
             $response = $getAvailableServices->getResponse();
             $response['price'] = $response['calculated_charge_amount'];
         }
@@ -100,7 +99,6 @@ class Olza extends Connect
         $this->setResponse($response);
         $this->setError($getAvailableServices->getError());
     }
-
 
     public function GetLabel()
     {
