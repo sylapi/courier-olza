@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CreateShipmentResponse xmlns="http://api.opennet.pl/">
+    <CreateShipmentResult>
+        <responseCode>2001</responseCode>
+        <responseDescription>The selected service is unavailable between given locations</responseDescription>
+    </CreateShipmentResult>
+</CreateShipmentResponse>

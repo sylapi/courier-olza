@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CreateShipmentResponse>
+    <CreateShipmentResult>
+        <responseDescription>Success</responseDescription>
+        <PackageNo>1101248</PackageNo>
+        <ParcelData>
+            <Label>
+                <ParcelID>1101248</ParcelID>
+                <Carrier>olza_logistic</Carrier>
+                <MimeFormat>PDF</MimeFormat>
+                <MimeData>JVBEwIDQyMC4wVFT0YK</MimeData>
+            </Label>
+        </ParcelData>
+    </CreateShipmentResult>
+</CreateShipmentResponse>

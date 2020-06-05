@@ -87,9 +87,20 @@ class Olza extends Connect
 
     public function CheckPrice()
     {
-        $response = (isset($this->parameters['options']['custom']['parcel_cost'])) ? $this->parameters['options']['custom']['parcel_cost'] : 0;
+        $getAvailableServices = new getAvailableServices();
+        $getAvailableServices->prepareData($this->parameters);
+        $getAvailableServices->send($this);
+
+        if ($getAvailableServices->isSuccess()) {
+
+            $response = $getAvailableServices->getResponse();
+            $response['price'] = $response['calculated_charge_amount'];
+        }
+
         $this->setResponse($response);
+        $this->setError($getAvailableServices->getError());
     }
+
 
     public function GetLabel()
     {
