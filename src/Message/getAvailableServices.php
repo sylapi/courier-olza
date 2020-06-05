@@ -2,7 +2,6 @@
 
 namespace Sylapi\Courier\Olza\Message;
 
-
 class getAvailableServices
 {
     private $data;
