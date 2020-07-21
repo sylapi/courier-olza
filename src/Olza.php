@@ -8,8 +8,7 @@ use Sylapi\Courier\Olza\Message\getManifest;
 use Sylapi\Courier\Olza\Message\getTracking;
 
 /**
- * Class Olza
- * @package Sylapi\Courier\Olza
+ * Class Olza.
  */
 class Olza extends Connect
 {
@@ -54,17 +53,11 @@ class Olza extends Connect
         return false;
     }
 
-    /**
-     *
-     */
     public function ValidateData()
     {
         $this->setResponse(['result' => true]);
     }
 
-    /**
-     *
-     */
     public function CreatePackage()
     {
         $this->login();
@@ -78,9 +71,6 @@ class Olza extends Connect
         $this->setError($createShipment->getError());
     }
 
-    /**
-     *
-     */
     public function GetParcel()
     {
         $this->login();
@@ -95,18 +85,12 @@ class Olza extends Connect
         }
     }
 
-    /**
-     *
-     */
     public function CheckPrice()
     {
         $response = (isset($this->parameters['options']['custom']['parcel_cost'])) ? $this->parameters['options']['custom']['parcel_cost'] : 0;
         $this->setResponse($response);
     }
 
-    /**
-     *
-     */
     public function GetLabel()
     {
         $this->login();
