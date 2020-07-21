@@ -85,13 +85,13 @@ class createShipment
             }
         }
 
-        if ($data['saturday'] == true) {
+        if ($data['options']['saturday'] == true) {
             $this->data['AdditionalServices'][] = 'SOB';
         }
-        if ($data['hour10'] == true) {
+        if ($data['options']['hour10'] == true) {
             $this->data['AdditionalServices'][] = 'DOR1000';
         }
-        if ($data['hour12'] == true) {
+        if ($data['options']['hour12'] == true) {
             $this->data['AdditionalServices'][] = 'DOR1200';
         }
 
