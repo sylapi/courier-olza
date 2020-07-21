@@ -3,7 +3,8 @@
 namespace Sylapi\Courier\Olza\Message;
 
 /**
- * Class getLabel.
+ * Class getLabel
+ * @package Sylapi\Courier\Olza\Message
  */
 class getLabel
 {
@@ -22,11 +23,10 @@ class getLabel
 
     /**
      * @param array $data
-     *
      * @return $this
      */
-    public function prepareData($data = [])
-    {
+    public function prepareData($data=[]) {
+
         $this->data = [
             'token' => [
                 'UserName' => $data['accessData']['login'],
@@ -35,14 +35,14 @@ class getLabel
             'request' => [
                 'RequestedLabels' => [
                     'PackagesByCarrier' => [
-                        'Carrier'   => 'olza_logistic',
+                        'Carrier' => 'olza_logistic',
                         'PackageNo' => [
-                            $data['custom_id'],
-                        ],
+                            $data['custom_id']
+                        ]
                     ],
                 ],
                 'MimeFormat' => (!empty($this->formats[$data['format']])) ? $this->formats[$data['format']] : 'PDF',
-            ],
+            ]
         ];
 
         return $this;
@@ -51,22 +51,27 @@ class getLabel
     /**
      * @param $client
      */
-    public function send($client)
-    {
+    public function send($client) {
+
         try {
+
             $result = $client->GetLabel($this->data);
 
             if (isset($result->GetLabelResult->LabelData->Label->ParcelID)) {
+
                 $this->response['return'] = [
-                    'status'      => $result->GetLabelResult->responseDescription.'',
+                    'status' => $result->GetLabelResult->responseDescription.'',
                     'tracking_id' => '',
-                    'label'       => $result->GetLabelResult->LabelData->Label->MimeData,
+                    'label' => $result->GetLabelResult->LabelData->Label->MimeData,
                 ];
-            } else {
+            }
+            else {
+
                 $this->response['error'] = $result->responseDescription.'';
                 $this->response['code'] = $result->responseCode.'';
             }
-        } catch (\SoapFault $e) {
+        }
+        catch (\SoapFault $e) {
             $this->response['error'] = $e->faultactor.' | '.$e->faultstring;
             $this->response['code'] = $e->faultcode.'';
         }
@@ -75,32 +80,27 @@ class getLabel
     /**
      * @return |null
      */
-    public function getResponse()
-    {
+    public function getResponse() {
         if ($this->isSuccess() == true) {
             return $this->response['return']['label'];
         }
-
         return null;
     }
 
     /**
      * @return bool
      */
-    public function isSuccess()
-    {
+    public function isSuccess() {
         if (isset($this->response['return']['status']) && $this->response['return']['status'] == 'Success') {
             return true;
         }
-
         return false;
     }
 
     /**
      * @return string|null
      */
-    public function getError()
-    {
+    public function getError() {
         if (!$this->isSuccess()) {
             $error = $this->response['code'].': '.$this->response['error'];
 
@@ -113,8 +113,7 @@ class getLabel
     /**
      * @return int
      */
-    public function getCode()
-    {
+    public function getCode() {
         return (!empty($this->response['code'])) ? $this->response['code'] : 0;
     }
 }
