@@ -3,18 +3,12 @@
 namespace Sylapi\Courier\Olza;
 
 /**
- * Class Connect
- * @package Sylapi\Courier\Olza
+ * Class Connect.
  */
 abstract class Connect
 {
-    /**
-     *
-     */
     const API_LIVE = 'http://olzaapi.opennet.pl/api.asmx?wsdl';
-    /**
-     *
-     */
+
     const API_SANDBOX = 'http://olzaapitest.pong.opennet.pl/api.asmx?wsdl';
 
     /**
@@ -68,6 +62,7 @@ abstract class Connect
 
     /**
      * @param $login
+     *
      * @return mixed
      */
     protected function setLogin($login)
@@ -77,6 +72,7 @@ abstract class Connect
 
     /**
      * @param $password
+     *
      * @return mixed
      */
     protected function setPassword($password)
@@ -118,6 +114,7 @@ abstract class Connect
 
     /**
      * @param $value
+     *
      * @return mixed
      */
     protected function setError($value)
@@ -129,6 +126,7 @@ abstract class Connect
 
     /**
      * @param $value
+     *
      * @return mixed
      */
     protected function setCode($value)
@@ -146,6 +144,7 @@ abstract class Connect
 
     /**
      * @param $value
+     *
      * @return mixed
      */
     protected function setResponse($value)

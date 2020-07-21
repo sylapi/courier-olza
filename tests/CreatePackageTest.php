@@ -60,8 +60,8 @@ class CreatePackageTest extends PHPUnitTestCase
 
         $this->soapMock->expects($this->any())->method('__call')->will(
             $this->returnValue(
-            simplexml_load_string($localXml, 'SimpleXMLElement', LIBXML_NOCDATA)
-        )
+                simplexml_load_string($localXml, 'SimpleXMLElement', LIBXML_NOCDATA)
+            )
         );
 
         $this->olza->setSoapClient($this->soapMock);
@@ -78,8 +78,8 @@ class CreatePackageTest extends PHPUnitTestCase
 
         $this->soapMock->expects($this->any())->method('__call')->will(
             $this->returnValue(
-            simplexml_load_string($localXml, 'SimpleXMLElement', LIBXML_NOCDATA)
-        )
+                simplexml_load_string($localXml, 'SimpleXMLElement', LIBXML_NOCDATA)
+            )
         );
 
         $this->olza->setSoapClient($this->soapMock);
