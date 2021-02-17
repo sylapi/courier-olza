@@ -3,15 +3,15 @@
 namespace Sylapi\Courier\Olza\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Olza\OlzaCourierApiFactory;
-use Sylapi\Courier\Olza\OlzaParameters;
-use Sylapi\Courier\Olza\OlzaSession;
-use Sylapi\Courier\Olza\OlzaSessionFactory;
 use Sylapi\Courier\Courier;
 use Sylapi\Courier\Olza\OlzaBooking;
+use Sylapi\Courier\Olza\OlzaCourierApiFactory;
+use Sylapi\Courier\Olza\OlzaParameters;
 use Sylapi\Courier\Olza\OlzaParcel;
 use Sylapi\Courier\Olza\OlzaReceiver;
 use Sylapi\Courier\Olza\OlzaSender;
+use Sylapi\Courier\Olza\OlzaSession;
+use Sylapi\Courier\Olza\OlzaSessionFactory;
 use Sylapi\Courier\Olza\OlzaShipment;
 
 class OlzaCourierApiFactoryTest extends PHPUnitTestCase
@@ -37,7 +37,7 @@ class OlzaCourierApiFactoryTest extends PHPUnitTestCase
 
     public function testCourierFactoryCreate()
     {
-        $olzaCourierApiFactory = new OlzaCourierApiFactory(new OlzaSessionFactory);
+        $olzaCourierApiFactory = new OlzaCourierApiFactory(new OlzaSessionFactory());
         $courier = $olzaCourierApiFactory->create($this->parameters);
 
         $this->assertInstanceOf(Courier::class, $courier);
@@ -47,6 +47,4 @@ class OlzaCourierApiFactoryTest extends PHPUnitTestCase
         $this->assertInstanceOf(OlzaSender::class, $courier->makeSender());
         $this->assertInstanceOf(OlzaShipment::class, $courier->makeShipment());
     }
-
-
 }
