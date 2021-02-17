@@ -1,0 +1,17 @@
+{
+     "status": {
+          "responseCode": 0,
+          "responseDescription": "Normal"
+     },
+     "response": {
+          "list_processed": {
+          },
+          "list_error": {
+               "123": {
+                    "shipmentId": "123",
+                    "responseCode": 901,
+                    "responseDescription": "GLS Error: Invalid COD rounding, the smallest fraction is 1 RC 16"
+               }               
+          }
+     }
+}

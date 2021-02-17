@@ -1,0 +1,18 @@
+{
+    "status": {
+         "responseCode": 0,
+         "responseDescription": "Normal"
+    },
+    "response": {
+          "list_processed": {
+          },
+          "list_error": {
+               "123": {
+                    "shipmentId": "123",
+                    "responseCode": 901,
+                    "responseDescription": "Unable to load details from SP server."
+               }              
+         },
+         "data_stream": ""
+    }
+}

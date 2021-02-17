@@ -1,0 +1,17 @@
+{
+    "status": {
+         "responseCode": 0,
+         "responseDescription": "Normal"
+    },
+    "response": {
+         "list_processed": {
+         },
+        "list_error": {
+            "123": {
+                "shipmentId": "123",
+                "responseCode": 15,
+                "responseDescription": "Shipment not found in system."
+            }            
+        }
+    }
+}

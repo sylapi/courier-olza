@@ -1,0 +1,25 @@
+{
+    "status": {
+         "responseCode": 0,
+         "responseDescription": "Normal"
+    },
+    "response": {
+         "list_processed": {
+            "123": {
+                "shipmentStatus": "PROCESSING",
+                "packageList": {
+                      "1001": {
+                          "shipmentId": "123",
+                          "packageId": "1001",
+                          "packageStatus": "SENT",
+                          "speditionExternalId": "00014459207",
+                          "speditionExternalBarcode": "000144592076"
+                      }
+                },
+                "shipmentId": 123
+             }
+         },
+        "list_error": {
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "status": {
+         "responseCode": 0,
+         "responseDescription": "Normal"
+    },
+    "response": {
+         "list_processed": {
+              "123": {
+                      "packageList": {
+                              "1001": {
+                                 "shipmentId": "123",
+                                 "packageId": "1001"
+                               }
+                       },
+                       "shipmentId": 123 
+              }
+         },
+         "list_error": {
+         },
+         "data_stream": "JVBERi0xLjcKOCAwIG9iago8PCAv"
+    }
+}

@@ -1,0 +1,24 @@
+{
+     "status": {
+          "responseCode": 0,
+          "responseDescription": "Normal"
+     },
+     "response": {
+          "list_processed": {
+               "123": {
+                   "packageList": {
+                       "1001": {
+                           "shipmentId": "123",
+                            "packageId": "1001",
+                            "packageType": "normal",
+                            "speditionExternalId": "00014459331",
+                            "speditionExternalBarcode": "000144593313"
+                       }
+                    },
+                    "shipmentId": "123"
+               }
+          },
+          "list_error": {
+          }
+     }
+}

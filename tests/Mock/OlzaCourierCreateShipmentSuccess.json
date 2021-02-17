@@ -1,0 +1,18 @@
+{ 
+    "status": {
+        "responseCode": 0,
+        "responseDescription": "Normal"
+    },
+    "response": {
+        "list_processed": {
+              "ABC": {
+                 "apiCustomRef" : "ABC",
+                 "shipmentId":123,
+                 "packageIds": [1001],
+                 "exchangePackageIds": [153154155]
+              }
+        },
+        "list_error": {
+        }
+     } 
+ }

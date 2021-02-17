@@ -1,0 +1,17 @@
+{ 
+    "status": {
+        "responseCode": 0,
+        "responseDescription": "Normal"
+    },
+    "response": {
+        "list_processed": {
+        },
+        "list_error": {
+            "ABC": {
+                "apiCustomRef" : "CDE",
+                "responseCode" : 900,
+                "responseDescription":"Přímá zásilka pro tuhle kombinaci není povolena."
+              }            
+        }
+     } 
+ }
