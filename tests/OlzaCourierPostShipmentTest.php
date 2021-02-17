@@ -2,10 +2,10 @@
 
 namespace Sylapi\Courier\Olza\Tests;
 
-use Sylapi\Courier\Olza\OlzaBooking;
-use Sylapi\Courier\Exceptions\ResponseException;
-use Sylapi\Courier\Olza\OlzaCourierPostShipment;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Sylapi\Courier\Exceptions\ResponseException;
+use Sylapi\Courier\Olza\OlzaBooking;
+use Sylapi\Courier\Olza\OlzaCourierPostShipment;
 use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
 
 class OlzaCourierPostShipmentTest extends PHPUnitTestCase
@@ -16,7 +16,7 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
     {
         $olzaCourierPostShipment = new OlzaCourierPostShipment(
             $this->getSession(
-                [ __DIR__.'/Mock/OlzaCourierPostShipmentSuccess.json' ]
+                [__DIR__.'/Mock/OlzaCourierPostShipmentSuccess.json']
             )
         );
 
@@ -32,16 +32,16 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
         $this->assertArrayHasKey('trackingId', $response);
         $this->assertEquals($response['trackingId'], '00014459331');
         $this->assertArrayHasKey('trackingId', $response);
-        $this->assertEquals($response['trackingBarcode'], '000144593313');        
-    } 
-    
+        $this->assertEquals($response['trackingBarcode'], '000144593313');
+    }
+
     public function testPostShipmentFailure()
     {
         $this->expectException(ResponseException::class);
 
         $olzaCourierPostShipment = new OlzaCourierPostShipment(
             $this->getSession(
-                [ __DIR__.'/Mock/OlzaCourierPostShipmentFailure.json' ]
+                [__DIR__.'/Mock/OlzaCourierPostShipmentFailure.json']
             )
         );
 

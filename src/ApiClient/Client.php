@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza\ApiClient;
 
+use GuzzleHttp\Client as HttpClient;
 use OlzaApiClient\Client as OlzaApiClient;
 use Sylapi\Courier\Olza\ApiClient\Services\Transport;
-use GuzzleHttp\Client as HttpClient;
 
 class Client extends OlzaApiClient
 {

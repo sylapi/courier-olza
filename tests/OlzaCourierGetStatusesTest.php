@@ -15,23 +15,22 @@ class OlzaCourierGetStatusesTest extends PHPUnitTestCase
     {
         $olzaCourierGetStatuses = new OlzaCourierGetStatuses(
             $this->getSession(
-                [ __DIR__.'/Mock/OlzaCourierGetStatusSuccess.json' ]
+                [__DIR__.'/Mock/OlzaCourierGetStatusSuccess.json']
             )
         );
 
-
         $response = $olzaCourierGetStatuses->getStatus('123');
         $this->assertEquals($response, StatusType::SENT);
-    } 
-    
+    }
+
     public function testGetStatusFailure()
     {
         $olzaCourierGetStatuses = new OlzaCourierGetStatuses(
             $this->getSession(
-                [ __DIR__.'/Mock/OlzaCourierGetStatusFailure.json' ]
+                [__DIR__.'/Mock/OlzaCourierGetStatusFailure.json']
             )
         );
-        
+
         $response = $olzaCourierGetStatuses->getStatus('123');
         $this->assertEquals($response, StatusType::APP_RESPONSE_ERROR);
     }
