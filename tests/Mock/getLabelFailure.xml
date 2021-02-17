@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<GetLabelResponse>
-    <GetLabelResult>
-        <responseCode>1000</responseCode>
-        <responseDescription>Package (s) not found (11012482)</responseDescription>
-    </GetLabelResult>
-</GetLabelResponse>
