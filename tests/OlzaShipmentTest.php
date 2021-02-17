@@ -2,15 +2,14 @@
 
 namespace Sylapi\Courier\Olza\Tests;
 
-use Sylapi\Courier\Olza\OlzaParcel;
-use Sylapi\Courier\Olza\OlzaSender;
-use Sylapi\Courier\Olza\OlzaReceiver;
-use Sylapi\Courier\Olza\OlzaShipment;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Sylapi\Courier\Olza\OlzaParcel;
+use Sylapi\Courier\Olza\OlzaReceiver;
+use Sylapi\Courier\Olza\OlzaSender;
+use Sylapi\Courier\Olza\OlzaShipment;
 
 class OlzaShipmentTest extends PHPUnitTestCase
 {
-
     public function testNumberOfPackagesIsAlwaysEqualTo1()
     {
         $parcel = new OlzaParcel();
@@ -31,7 +30,7 @@ class OlzaShipmentTest extends PHPUnitTestCase
         $shipment->setSender($sender)
             ->setReceiver($receiver)
             ->setParcel($parcel);
-        
+
         $this->assertIsBool($shipment->validate());
         $this->assertIsBool($shipment->getReceiver()->validate());
         $this->assertIsBool($shipment->getSender()->validate());

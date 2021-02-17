@@ -2,20 +2,19 @@
 
 namespace Sylapi\Courier\Olza\Tests;
 
-use Sylapi\Courier\Olza\OlzaParcel;
-use Sylapi\Courier\Olza\OlzaSender;
-use Sylapi\Courier\Olza\OlzaReceiver;
-use Sylapi\Courier\Olza\OlzaShipment;
-use Sylapi\Courier\Exceptions\ResponseException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Sylapi\Courier\Exceptions\ResponseException;
 use Sylapi\Courier\Olza\OlzaCourierCreateShipment;
+use Sylapi\Courier\Olza\OlzaParcel;
+use Sylapi\Courier\Olza\OlzaReceiver;
+use Sylapi\Courier\Olza\OlzaSender;
+use Sylapi\Courier\Olza\OlzaShipment;
 use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
-
 
 class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
 {
     use OlzaSessionTrait;
-    
+
     private function getShipmentMock()
     {
         $shipmentMock = $this->createMock(OlzaShipment::class);
@@ -35,7 +34,7 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
     {
         $olzaCourierCreateShipment = new OlzaCourierCreateShipment(
             $this->getSession(
-                [ __DIR__.'/Mock/OlzaCourierCreateShipmentSuccess.json' ]
+                [__DIR__.'/Mock/OlzaCourierCreateShipmentSuccess.json']
             )
         );
 
@@ -44,16 +43,16 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
         $this->assertIsArray($response);
         $this->assertArrayHasKey('referenceId', $response);
         $this->assertArrayHasKey('shipmentId', $response);
-        $this->assertEquals($response['shipmentId'], '123');      
-    } 
-    
+        $this->assertEquals($response['shipmentId'], '123');
+    }
+
     public function testCreateShipmentFailure()
     {
         $this->expectException(ResponseException::class);
 
         $olzaCourierCreateShipment = new OlzaCourierCreateShipment(
             $this->getSession(
-                [ __DIR__.'/Mock/OlzaCourierCreateShipmentFailure.json' ]
+                [__DIR__.'/Mock/OlzaCourierCreateShipmentFailure.json']
             )
         );
 
