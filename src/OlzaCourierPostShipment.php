@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
+use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
+use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\Booking;
 use Sylapi\Courier\Contracts\CourierPostShipment;
+use Sylapi\Courier\Contracts\Response as ResponseContract;
+use Sylapi\Courier\Entities\Response;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
-use OlzaApiClient\Entities\Response\ApiBatchResponse;
-use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
-use Sylapi\Courier\Entities\Response;
-use Sylapi\Courier\Contracts\Response as ResponseContract;
 
 class OlzaCourierPostShipment implements CourierPostShipment
 {
@@ -28,8 +28,9 @@ class OlzaCourierPostShipment implements CourierPostShipment
 
         try {
             $apiResponse = $this->getApiBatchResponse([$booking->getShipmentId()]);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $response->addError($e);
+
             return $response;
         }
 
@@ -38,13 +39,13 @@ class OlzaCourierPostShipment implements CourierPostShipment
             for ($iterator; $iterator->valid(); $iterator->next()) {
                 $response->addError($iterator->current());
             }
+
             return $response;
         }
 
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
-        
         $response->shipmentId = $parcel->getShipmentId();
         $response->trackingId = $parcel->getSpeditionExternalId();
         $response->trackingBarcode = $parcel->getSpeditionExternalBarcode();
@@ -69,12 +70,12 @@ class OlzaCourierPostShipment implements CourierPostShipment
                         ->request()
                         ->setPayloadFromHelper($this->getPostShipmentsEnity($shipmentsNumbers));
 
-        try{
+        try {
             $apiResponse = $apiClient->postShipments($request);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new TransportException($e->getMessage(), $e->getCode());
-        }                        
-    
+        }
+
         return $apiResponse;
-    }    
+    }
 }

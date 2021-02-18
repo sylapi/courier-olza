@@ -2,10 +2,10 @@
 
 namespace Sylapi\Courier\Olza\Tests;
 
-use Sylapi\Courier\Olza\OlzaBooking;
-use Sylapi\Courier\Contracts\Response;
-use Sylapi\Courier\Olza\OlzaCourierPostShipment;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Sylapi\Courier\Contracts\Response;
+use Sylapi\Courier\Olza\OlzaBooking;
+use Sylapi\Courier\Olza\OlzaCourierPostShipment;
 use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
 
 class OlzaCourierPostShipmentTest extends PHPUnitTestCase

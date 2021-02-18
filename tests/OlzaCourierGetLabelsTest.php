@@ -3,9 +3,9 @@
 namespace Sylapi\Courier\Olza\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Sylapi\Courier\Contracts\Label;
 use Sylapi\Courier\Olza\OlzaCourierGetLabels;
 use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
-use Sylapi\Courier\Contracts\Label;
 
 class OlzaCourierGetLabelsTest extends PHPUnitTestCase
 {
