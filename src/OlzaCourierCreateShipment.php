@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use Sylapi\Courier\Entities\Response;
-use Sylapi\Courier\Contracts\Shipment;
-use Sylapi\Courier\Helpers\ReferenceHelper;
-use Sylapi\Courier\Exceptions\TransportException;
-use Sylapi\Courier\Contracts\CourierCreateShipment;
 use OlzaApiClient\Entities\Helpers\NewShipmentEnity;
-use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use Sylapi\Courier\Contracts\CourierCreateShipment;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
+use Sylapi\Courier\Contracts\Shipment;
+use Sylapi\Courier\Entities\Response;
+use Sylapi\Courier\Exceptions\TransportException;
+use Sylapi\Courier\Helpers\ReferenceHelper;
+use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
 
 class OlzaCourierCreateShipment implements CourierCreateShipment
 {
@@ -29,8 +29,9 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
 
         try {
             $apiResponse = $this->getApiBatchResponse($shipment);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $response->addError($e);
+
             return $response;
         }
 
@@ -39,6 +40,7 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
             for ($iterator; $iterator->valid(); $iterator->next()) {
                 $response->addError($iterator->current());
             }
+
             return $response;
         }
 
@@ -57,11 +59,11 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
                         ->request()
                         ->addToPayloadFromHelper($this->getNewShipmentEnity($shipment));
 
-        try{
+        try {
             $apiResponse = $apiClient->createShipments($request);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new TransportException($e->getMessage(), $e->getCode());
-        }        
+        }
 
         return $apiResponse;
     }

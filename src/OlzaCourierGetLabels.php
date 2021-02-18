@@ -7,11 +7,10 @@ namespace Sylapi\Courier\Olza;
 use OlzaApiClient\Entities\Helpers\GetLabelsEnity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\CourierGetLabels;
-use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
-use Sylapi\Courier\Entities\Label;
 use Sylapi\Courier\Contracts\Label as LabelContract;
-use OlzaApiClient\Exception\ApiException;
+use Sylapi\Courier\Entities\Label;
 use Sylapi\Courier\Exceptions\TransportException;
+use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
 
 class OlzaCourierGetLabels implements CourierGetLabels
 {
@@ -23,21 +22,23 @@ class OlzaCourierGetLabels implements CourierGetLabels
     }
 
     public function getLabel(string $shipmentId): LabelContract
-    {   
+    {
         try {
             $apiResponse = $this->getApiBatchResponse([$shipmentId]);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $label = new Label(null);
             $label->addError($e);
+
             return $label;
         }
-        
+
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
             $label = new Label(null);
             $iterator = $apiResponse->getErrorList()->getIterator();
             for ($iterator; $iterator->valid(); $iterator->next()) {
                 $label->addError($iterator->current());
             }
+
             return $label;
         }
 
@@ -50,12 +51,13 @@ class OlzaCourierGetLabels implements CourierGetLabels
         $request = $this->session
                         ->request()
                         ->setPayloadFromHelper($this->getLabelsEntity($shipmentsNumbers));
-        try{
+
+        try {
             $apiResponse = $apiClient->getLabels($request);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             throw new TransportException($e->getMessage(), $e->getCode());
         }
-    
+
         return $apiResponse;
     }
 
