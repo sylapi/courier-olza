@@ -6,6 +6,7 @@ namespace Sylapi\Courier\Olza\ApiClient\Services;
 
 use GuzzleHttp\Client as HttpClient;
 use OlzaApiClient\Services\Transport as OlzaApiClientTransport;
+use OlzaApiClient\Interfaces\TransportInterface;
 
 class Transport extends OlzaApiClientTransport
 {
@@ -14,7 +15,7 @@ class Transport extends OlzaApiClientTransport
         $this->provider = $provider;
     }
 
-    public static function getApiCallUri()
+    public static function getApiCallUri(): string
     {
         $self = new self();
 

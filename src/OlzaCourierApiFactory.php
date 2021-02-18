@@ -14,7 +14,9 @@ class OlzaCourierApiFactory
     {
         $this->olzaSessionFactory = $olzaSessionFactory;
     }
-
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function create(array $parameters): Courier
     {
         $session = $this->olzaSessionFactory

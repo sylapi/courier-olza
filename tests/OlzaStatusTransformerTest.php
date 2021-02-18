@@ -8,7 +8,7 @@ use Sylapi\Courier\Olza\OlzaStatusTransformer;
 
 class OlzaStatusTransformerTest extends PHPUnitTestCase
 {
-    public function testStatusTransformer()
+    public function testStatusTransformer(): void
     {
         $olzaStatusTransformer = new OlzaStatusTransformer('STORNO');
         $this->assertEquals(StatusType::CANCELLED, (string) $olzaStatusTransformer);

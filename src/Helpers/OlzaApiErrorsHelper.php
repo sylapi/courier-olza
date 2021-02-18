@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza\Helpers;
 
 use ArrayObject;
+use Exception;
 
 class OlzaApiErrorsHelper
 {
     const SEPARATOR = '|';
 
-    public static function hasErrors(ArrayObject $errors)
+    /**
+     * @param ArrayObject<string, Exception> $errors
+     */
+    public static function hasErrors(ArrayObject $errors): bool
     {
         return $errors->count() > 0;
     }
 
+    /**
+     * @param ArrayObject<string, Exception> $errors
+     */
     public static function toString(ArrayObject $errors): string
     {
         $iterator = $errors->getIterator();

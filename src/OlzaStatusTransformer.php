@@ -9,6 +9,9 @@ use Sylapi\Courier\Enums\StatusType;
 
 class OlzaStatusTransformer extends StatusTransformer
 {
+    /**
+     * @var array<string, string>
+     */
     public $statuses = [
         'NEW'                => StatusType::NEW,
         'STORNO'             => StatusType::CANCELLED,

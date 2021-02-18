@@ -10,7 +10,7 @@ class OlzaCourierGetLabelsTest extends PHPUnitTestCase
 {
     use OlzaSessionTrait;
 
-    public function testGetLabelsSuccess()
+    public function testGetLabelsSuccess(): void
     {
         $olzaCourierGetLabels = new OlzaCourierGetLabels(
             $this->getSession(
@@ -22,7 +22,7 @@ class OlzaCourierGetLabelsTest extends PHPUnitTestCase
         $this->assertEquals($response, 'JVBERi0xLjcKOCAwIG9iago8PCAv');
     }
 
-    public function testGetLabelsFailure()
+    public function testGetLabelsFailure(): void
     {
         $olzaCourierGetLabels = new OlzaCourierGetLabels(
             $this->getSession(

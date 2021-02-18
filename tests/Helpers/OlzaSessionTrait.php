@@ -11,6 +11,9 @@ use Sylapi\Courier\Olza\OlzaSession;
 
 trait OlzaSessionTrait
 {
+    /**
+     * @param array<string> $responseMockFiles
+     */
     private function getSession(array $responseMockFiles): OlzaSession
     {
         $responseMocks = [];

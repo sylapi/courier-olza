@@ -30,7 +30,7 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
         return $shipmentMock;
     }
 
-    public function testCreateShipmentSuccess()
+    public function testCreateShipmentSuccess(): void
     {
         $olzaCourierCreateShipment = new OlzaCourierCreateShipment(
             $this->getSession(
@@ -46,7 +46,7 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
         $this->assertEquals($response['shipmentId'], '123');
     }
 
-    public function testCreateShipmentFailure()
+    public function testCreateShipmentFailure(): void
     {
         $this->expectException(ResponseException::class);
 

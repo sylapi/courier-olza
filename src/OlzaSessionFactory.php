@@ -10,6 +10,10 @@ use Sylapi\Courier\Olza\ApiClient\Services\Transport;
 class OlzaSessionFactory
 {
     private $sessions = [];
+    
+    /**
+     * @var null|OlzaParameters<string,mixed>
+     */    
     private $parameters;
 
     //These constants can be extracted into injected configuration

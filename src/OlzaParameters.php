@@ -10,6 +10,11 @@ class OlzaParameters extends ArrayObject
 {
     const DEFAULT_LABEL_TYPE = 'A4';
 
+    public $labelType;
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function create(array $parameters): self
     {
         return new self($parameters, ArrayObject::ARRAY_AS_PROPS);
@@ -17,7 +22,7 @@ class OlzaParameters extends ArrayObject
 
     public function getLabelType()
     {
-        return  ($this->hasProperty('labelType')) ? $this->labelType : self::DEFAULT_LABEL_TYPE;
+        return  ($this->hasProperty('labelType') && $this->labelType !== null) ? $this->labelType : self::DEFAULT_LABEL_TYPE;
     }
 
     public function hasProperty(string $name)

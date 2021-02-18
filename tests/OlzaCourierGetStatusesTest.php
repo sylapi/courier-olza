@@ -11,7 +11,7 @@ class OlzaCourierGetStatusesTest extends PHPUnitTestCase
 {
     use OlzaSessionTrait;
 
-    public function testGetStatusSuccess()
+    public function testGetStatusSuccess(): void
     {
         $olzaCourierGetStatuses = new OlzaCourierGetStatuses(
             $this->getSession(
@@ -23,7 +23,7 @@ class OlzaCourierGetStatusesTest extends PHPUnitTestCase
         $this->assertEquals($response, StatusType::SENT);
     }
 
-    public function testGetStatusFailure()
+    public function testGetStatusFailure(): void
     {
         $olzaCourierGetStatuses = new OlzaCourierGetStatuses(
             $this->getSession(

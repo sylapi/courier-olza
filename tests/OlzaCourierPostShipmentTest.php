@@ -12,7 +12,7 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
 {
     use OlzaSessionTrait;
 
-    public function testPostShipmentSuccess()
+    public function testPostShipmentSuccess(): void
     {
         $olzaCourierPostShipment = new OlzaCourierPostShipment(
             $this->getSession(
@@ -35,7 +35,7 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
         $this->assertEquals($response['trackingBarcode'], '000144593313');
     }
 
-    public function testPostShipmentFailure()
+    public function testPostShipmentFailure(): void
     {
         $this->expectException(ResponseException::class);
 

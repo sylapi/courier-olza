@@ -16,6 +16,9 @@ use Sylapi\Courier\Olza\OlzaShipment;
 
 class OlzaCourierApiFactoryTest extends PHPUnitTestCase
 {
+    /**
+     * @var array<string,mixed>
+     */
     private $parameters = [
         'login'           => 'login',
         'password'        => 'password',
@@ -26,7 +29,7 @@ class OlzaCourierApiFactoryTest extends PHPUnitTestCase
         'shipmentType'    => 'WAREHOUSE',
     ];
 
-    public function testOlzaSessionFactory()
+    public function testOlzaSessionFactory(): void
     {
         $olzaSessionFactory = new OlzaSessionFactory();
         $olzaSession = $olzaSessionFactory->session(
@@ -35,7 +38,7 @@ class OlzaCourierApiFactoryTest extends PHPUnitTestCase
         $this->assertInstanceOf(OlzaSession::class, $olzaSession);
     }
 
-    public function testCourierFactoryCreate()
+    public function testCourierFactoryCreate(): void
     {
         $olzaCourierApiFactory = new OlzaCourierApiFactory(new OlzaSessionFactory());
         $courier = $olzaCourierApiFactory->create($this->parameters);

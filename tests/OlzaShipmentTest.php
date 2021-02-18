@@ -10,7 +10,7 @@ use Sylapi\Courier\Olza\OlzaShipment;
 
 class OlzaShipmentTest extends PHPUnitTestCase
 {
-    public function testNumberOfPackagesIsAlwaysEqualTo1()
+    public function testNumberOfPackagesIsAlwaysEqualTo1(): void
     {
         $parcel = new OlzaParcel();
         $shipment = new OlzaShipment();
@@ -20,7 +20,7 @@ class OlzaShipmentTest extends PHPUnitTestCase
         $this->assertEquals(1, $shipment->getQuantity());
     }
 
-    public function testShipmentValidate()
+    public function testShipmentValidate(): void
     {
         $receiver = new OlzaReceiver();
         $sender = new OlzaSender();

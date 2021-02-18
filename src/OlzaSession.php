@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-// use OlzaApiClient\Client as OlzaClient;
 use GuzzleHttp\Client as HttpClient;
 use OlzaApiClient\Entities\Helpers\HeaderEntity;
 use OlzaApiClient\Entities\Request\ApiBatchRequest;
