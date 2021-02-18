@@ -12,7 +12,7 @@ use Sylapi\Courier\Olza\ApiClient\Services\Transport;
 class Client extends OlzaApiClient
 {
     /**
-     * @var TransportInterface 
+     * @var TransportInterface
      */
     protected $transport;
 

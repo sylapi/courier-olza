@@ -6,7 +6,6 @@ namespace Sylapi\Courier\Olza\ApiClient\Services;
 
 use GuzzleHttp\Client as HttpClient;
 use OlzaApiClient\Services\Transport as OlzaApiClientTransport;
-use OlzaApiClient\Interfaces\TransportInterface;
 
 class Transport extends OlzaApiClientTransport
 {
