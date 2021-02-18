@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
-use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\Booking;
 use Sylapi\Courier\Contracts\CourierPostShipment;
-use Sylapi\Courier\Exceptions\ResponseException;
+use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
+use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
+use Sylapi\Courier\Entities\Response;
+use Sylapi\Courier\Contracts\Response as ResponseContract;
 
 class OlzaCourierPostShipment implements CourierPostShipment
 {
@@ -20,33 +22,34 @@ class OlzaCourierPostShipment implements CourierPostShipment
         $this->session = $session;
     }
 
-    public function postShipment(Booking $booking): array
+    public function postShipment(Booking $booking): ResponseContract
     {
-        $apiResponse = $this->getApiBatchResponse([$booking->getShipmentId()]);
+        $response = new Response();
+
+        try {
+            $apiResponse = $this->getApiBatchResponse([$booking->getShipmentId()]);
+        } catch(\Exception $e) {
+            $response->addError($e);
+            return $response;
+        }
 
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            throw new ResponseException(OlzaApiErrorsHelper::toString($apiResponse->getErrorList()));
+            $iterator = $apiResponse->getErrorList()->getIterator();
+            for ($iterator; $iterator->valid(); $iterator->next()) {
+                $response->addError($iterator->current());
+            }
+            return $response;
         }
 
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
-        return [
-            'shipmentId'      => $parcel->getShipmentId(),
-            'trackingId'      => $parcel->getSpeditionExternalId(),
-            'trackingBarcode' => $parcel->getSpeditionExternalBarcode(),
-        ];
-    }
+        
+        $response->shipmentId = $parcel->getShipmentId();
+        $response->trackingId = $parcel->getSpeditionExternalId();
+        $response->trackingBarcode = $parcel->getSpeditionExternalBarcode();
 
-    private function getApiBatchResponse(array $shipmentsNumbers): ApiBatchResponse
-    {
-        $apiClient = $this->session->client();
-        $request = $this->session
-                        ->request()
-                        ->setPayloadFromHelper($this->getPostShipmentsEnity($shipmentsNumbers));
-        $apiResponse = $apiClient->postShipments($request);
-
-        return $apiResponse;
+        return $response;
     }
 
     private function getPostShipmentsEnity(array $shipmentsNumbers): PostShipmentsEnity
@@ -58,4 +61,20 @@ class OlzaCourierPostShipment implements CourierPostShipment
 
         return $postShipmentsEnity;
     }
+
+    private function getApiBatchResponse(array $shipmentsNumbers): ApiBatchResponse
+    {
+        $apiClient = $this->session->client();
+        $request = $this->session
+                        ->request()
+                        ->setPayloadFromHelper($this->getPostShipmentsEnity($shipmentsNumbers));
+
+        try{
+            $apiResponse = $apiClient->postShipments($request);
+        } catch(\Exception $e) {
+            throw new TransportException($e->getMessage(), $e->getCode());
+        }                        
+    
+        return $apiResponse;
+    }    
 }

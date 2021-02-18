@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use OlzaApiClient\Entities\Helpers\NewShipmentEnity;
-use OlzaApiClient\Entities\Response\ApiBatchResponse;
-use Sylapi\Courier\Contracts\CourierCreateShipment;
+use Sylapi\Courier\Entities\Response;
 use Sylapi\Courier\Contracts\Shipment;
-use Sylapi\Courier\Exceptions\ResponseException;
 use Sylapi\Courier\Helpers\ReferenceHelper;
+use Sylapi\Courier\Exceptions\TransportException;
+use Sylapi\Courier\Contracts\CourierCreateShipment;
+use OlzaApiClient\Entities\Helpers\NewShipmentEnity;
 use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
+use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use Sylapi\Courier\Contracts\Response as ResponseContract;
 
 class OlzaCourierCreateShipment implements CourierCreateShipment
 {
@@ -21,20 +23,31 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
         $this->session = $session;
     }
 
-    public function createShipment(Shipment $shipment): array
+    public function createShipment(Shipment $shipment): ResponseContract
     {
-        $apiResponse = $this->getApiBatchResponse($shipment);
+        $response = new Response();
+
+        try {
+            $apiResponse = $this->getApiBatchResponse($shipment);
+        } catch(\Exception $e) {
+            $response->addError($e);
+            return $response;
+        }
 
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            throw new ResponseException(OlzaApiErrorsHelper::toString($apiResponse->getErrorList()));
+            $iterator = $apiResponse->getErrorList()->getIterator();
+            for ($iterator; $iterator->valid(); $iterator->next()) {
+                $response->addError($iterator->current());
+            }
+            return $response;
         }
 
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
 
-        return [
-            'referenceId' => $shipment->getApiCustomRef(),
-            'shipmentId'  => $shipment->getShipmentId(),
-        ];
+        $response->referenceId = $shipment->getApiCustomRef();
+        $response->shipmentId = $shipment->getShipmentId();
+
+        return $response;
     }
 
     private function getApiBatchResponse(Shipment $shipment): ApiBatchResponse
@@ -44,7 +57,11 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
                         ->request()
                         ->addToPayloadFromHelper($this->getNewShipmentEnity($shipment));
 
-        $apiResponse = $apiClient->createShipments($request);
+        try{
+            $apiResponse = $apiClient->createShipments($request);
+        } catch(\Exception $e) {
+            throw new TransportException($e->getMessage(), $e->getCode());
+        }        
 
         return $apiResponse;
     }

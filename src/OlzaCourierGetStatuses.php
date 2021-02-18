@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
+use Sylapi\Courier\Entities\Status;
+use Sylapi\Courier\Enums\StatusType;
+use Sylapi\Courier\Contracts\CourierGetStatuses;
+use Sylapi\Courier\Exceptions\TransportException;
+use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
 use OlzaApiClient\Entities\Helpers\GetStatusesEntity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
-use OlzaApiClient\Entities\Response\Parcel;
-use Sylapi\Courier\Contracts\CourierGetStatuses;
-use Sylapi\Courier\Enums\StatusType;
-use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
+use Sylapi\Courier\Contracts\Status as StatusContract;
 
 class OlzaCourierGetStatuses implements CourierGetStatuses
 {
@@ -20,22 +22,29 @@ class OlzaCourierGetStatuses implements CourierGetStatuses
         $this->session = $session;
     }
 
-    public function getStatus(string $shipmentId): string
+    public function getStatus(string $shipmentId): StatusContract
     {
-        $apiResponse = $this->getApiBatchResponse([$shipmentId]);
+        try {
+            $apiResponse = $this->getApiBatchResponse([$shipmentId]);
+        } catch(\Exception $e) {
+            $status = new Status(StatusType::APP_RESPONSE_ERROR);
+            $status->addError($e);
+            return $status;
+        }
 
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            return StatusType::APP_RESPONSE_ERROR;
+            $status =  new Status(StatusType::APP_RESPONSE_ERROR);
+            $iterator = $apiResponse->getErrorList()->getIterator();
+            for ($iterator; $iterator->valid(); $iterator->next()) {
+                $status->addError($iterator->current());
+            }
+            return $status;
         }
 
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
-        if (!($parcel instanceof Parcel)) {
-            return StatusType::APP_RESPONSE_ERROR;
-        }
-
-        return (string) new OlzaStatusTransformer((string) $parcel->getParcelStatus());
+        return new Status((string) new OlzaStatusTransformer((string) $parcel->getParcelStatus()));
     }
 
     private function getStatusesEntity(array $shipmentsNumbers): GetStatusesEntity
@@ -52,7 +61,12 @@ class OlzaCourierGetStatuses implements CourierGetStatuses
         $request = $this->session
                         ->request()
                         ->setPayloadFromHelper($this->getStatusesEntity($shipmentsNumbers));
-        $apiResponse = $apiClient->getStatuses($request);
+    
+        try{
+            $apiResponse = $apiClient->getStatuses($request);
+        } catch(\Exception $e) {
+            throw new TransportException($e->getMessage(), $e->getCode());
+        }
 
         return $apiResponse;
     }

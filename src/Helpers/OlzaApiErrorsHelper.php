@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza\Helpers;
 
 use ArrayObject;
-use Exception;
 
 class OlzaApiErrorsHelper
 {
     const SEPARATOR = '|';
 
     /**
-     * @param ArrayObject<string, Exception> $errors
+     * @param ArrayObject<string, \Throwable> $errors
      */
     public static function hasErrors(ArrayObject $errors): bool
     {
@@ -20,7 +19,7 @@ class OlzaApiErrorsHelper
     }
 
     /**
-     * @param ArrayObject<string, Exception> $errors
+     * @param ArrayObject<string, \Throwable> $errors
      */
     public static function toString(ArrayObject $errors): string
     {

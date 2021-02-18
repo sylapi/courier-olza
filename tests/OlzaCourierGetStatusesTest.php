@@ -33,5 +33,6 @@ class OlzaCourierGetStatusesTest extends PHPUnitTestCase
 
         $response = $olzaCourierGetStatuses->getStatus('123');
         $this->assertEquals($response, StatusType::APP_RESPONSE_ERROR);
+        $this->assertTrue($response->hasErrors());
     }
 }

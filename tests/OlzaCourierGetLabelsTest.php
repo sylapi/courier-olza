@@ -5,6 +5,7 @@ namespace Sylapi\Courier\Olza\Tests;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Olza\OlzaCourierGetLabels;
 use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
+use Sylapi\Courier\Contracts\Label;
 
 class OlzaCourierGetLabelsTest extends PHPUnitTestCase
 {
@@ -31,6 +32,8 @@ class OlzaCourierGetLabelsTest extends PHPUnitTestCase
         );
 
         $response = $olzaCourierGetLabels->getLabel('123');
-        $this->assertNull($response);
+        $this->assertInstanceOf(Label::class, $response);
+        $this->assertTrue($response->hasErrors());
+        $this->assertInstanceOf(\Throwable::class, $response->getFirstError());
     }
 }
