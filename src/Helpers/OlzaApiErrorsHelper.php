@@ -11,7 +11,7 @@ class OlzaApiErrorsHelper
     const SEPARATOR = '|';
 
     /**
-     * @param ArrayObject<string, \Throwable> $errors
+     * @param ArrayObject<string, \Exception> $errors
      */
     public static function hasErrors(ArrayObject $errors): bool
     {
@@ -19,7 +19,7 @@ class OlzaApiErrorsHelper
     }
 
     /**
-     * @param ArrayObject<string, \Throwable> $errors
+     * @param ArrayObject<string, \Exception> $errors
      */
     public static function toString(ArrayObject $errors): string
     {
