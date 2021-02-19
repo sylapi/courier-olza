@@ -3,18 +3,18 @@
 namespace Sylapi\Courier\Olza\Tests\Unit;
 
 use ArrayObject;
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Exception;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
 
 class OlzaApiErrorsHelperTest extends PHPUnitTestCase
 {
     public function testErrorsToString(): void
     {
-        $messages = [ 'TEST 1', 'TEST 2' ];
+        $messages = ['TEST 1', 'TEST 2'];
         $errors = [];
 
-        foreach($messages as $message) {
+        foreach ($messages as $message) {
             $errors[] = new Exception($message);
         }
 
