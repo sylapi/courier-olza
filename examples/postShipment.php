@@ -1,26 +1,26 @@
 <?php
+
 use Sylapi\Courier\CourierFactory;
 
-$courier = CourierFactory::create('Olza',[
-    'login' => 'mylogin',
-    'password' => 'mypassword',
-    'sandbox' => true,
+$courier = CourierFactory::create('Olza', [
+    'login'           => 'mylogin',
+    'password'        => 'mypassword',
+    'sandbox'         => true,
     'requestLanguage' => 'pl',
-    'labelType' => 'A4',
-    'speditionCode' => 'GLS',
-    'shipmentType' => 'WAREHOUSE'
+    'labelType'       => 'A4',
+    'speditionCode'   => 'GLS',
+    'shipmentType'    => 'WAREHOUSE',
 ]);
 
 /**
- * PostShipment
+ * PostShipment.
  */
-
 $booking = $courier->makeBooking();
 $booking->setShipmentId('123456');
 
 try {
     $response = $courier->postShipment($booking);
-    if($response->hasErrors()) {
+    if ($response->hasErrors()) {
         var_dump($response->getFirstError()->getMessage());
     } else {
         var_dump($response->shipmentId); // Zewnetrzny idetyfikator zamowienia
@@ -30,4 +30,3 @@ try {
 } catch (\Exception $e) {
     var_dump($e->getMessage());
 }
-    

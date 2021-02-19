@@ -1,20 +1,20 @@
 <?php
+
 use Sylapi\Courier\CourierFactory;
 
-$courier = CourierFactory::create('Olza',[
-    'login' => 'mylogin',
-    'password' => 'mypassword',
-    'sandbox' => true,
+$courier = CourierFactory::create('Olza', [
+    'login'           => 'mylogin',
+    'password'        => 'mypassword',
+    'sandbox'         => true,
     'requestLanguage' => 'pl',
-    'labelType' => 'A4',
-    'speditionCode' => 'GLS',
-    'shipmentType' => 'WAREHOUSE'
+    'labelType'       => 'A4',
+    'speditionCode'   => 'GLS',
+    'shipmentType'    => 'WAREHOUSE',
 ]);
 
 /**
- * CreateShipment
+ * CreateShipment.
  */
-
 $sender = $courier->makeSender();
 $sender->setFullName('Nazwa Firmy/Nadawca')
     ->setStreet('Ulica')
@@ -53,14 +53,12 @@ $shipment->setSender($sender)
 
 try {
     $response = $courier->createShipment($shipment);
-    if($response->hasErrors()) {
+    if ($response->hasErrors()) {
         var_dump($response->getFirstError()->getMessage());
     } else {
         var_dump($response->referenceId); // Utworzony wewnetrzny idetyfikator zamowienia
         var_dump($response->shipmentId); // Zewnetrzny idetyfikator zamowienia
     }
-
 } catch (\Exception $e) {
     var_dump($e->getMessage());
 }
-    

@@ -1,28 +1,27 @@
 <?php
+
 use Sylapi\Courier\CourierFactory;
 
-$courier = CourierFactory::create('Olza',[
-    'login' => 'mylogin',
-    'password' => 'mypassword',
-    'sandbox' => true,
+$courier = CourierFactory::create('Olza', [
+    'login'           => 'mylogin',
+    'password'        => 'mypassword',
+    'sandbox'         => true,
     'requestLanguage' => 'pl',
-    'labelType' => 'A4',
-    'speditionCode' => 'GLS',
-    'shipmentType' => 'WAREHOUSE'
+    'labelType'       => 'A4',
+    'speditionCode'   => 'GLS',
+    'shipmentType'    => 'WAREHOUSE',
 ]);
 
 /**
- * GetLabel
+ * GetLabel.
  */
-
 try {
     $response = $courier->getLabel('123456');
-    if($response->hasErrors()) {
+    if ($response->hasErrors()) {
         var_dump($response->getFirstError()->getMessage());
     } else {
-        var_dump((string) $response); 
+        var_dump((string) $response);
     }
 } catch (\Exception $e) {
     var_dump($e->getMessage());
 }
-    
