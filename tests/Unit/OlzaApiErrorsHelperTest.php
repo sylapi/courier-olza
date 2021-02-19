@@ -11,7 +11,7 @@ class OlzaApiErrorsHelperTest extends PHPUnitTestCase
 {
     public function testErrorsToString(): void
     {
-        $messages = ['TEST 1', 'TEST 2'];
+        $messages = ['TEST 1', 'TEST 3'];
         $errors = [];
 
         foreach ($messages as $message) {
