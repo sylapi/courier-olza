@@ -10,17 +10,11 @@ class OlzaApiErrorsHelper
 {
     const SEPARATOR = '|';
 
-    /**
-     * @param ArrayObject<string, \Exception> $errors
-     */
     public static function hasErrors(ArrayObject $errors): bool
     {
         return $errors->count() > 0;
     }
 
-    /**
-     * @param ArrayObject<string, \Exception> $errors
-     */
     public static function toString(ArrayObject $errors): string
     {
         $iterator = $errors->getIterator();
