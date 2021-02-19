@@ -17,7 +17,7 @@ class OlzaSessionFactory
     private $parameters;
 
     //These constants can be extracted into injected configuration
-    const API_LIVE = 'https://live.olza.test';
+    const API_LIVE = 'https://panel.olzalogistic.com';
     const API_SANDBOX = 'https://test.panel.olzalogistic.com';
 
     public function session(OlzaParameters $parameters): OlzaSession

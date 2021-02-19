@@ -39,15 +39,15 @@
 
     $receiver->setFirstName('Jan')
         ->setSurname('Nowak')
-        ->setStreet('Ulica')
-        ->setHouseNumber('2a')
-        ->setApartmentNumber('1')
-        ->setCity('Miasto')
-        ->setZipCode('66100')
-        ->setCountry('Poland')
-        ->setCountryCode('pl')
+        ->setStreet('Vysoká')
+        ->setHouseNumber('15')
+        ->setApartmentNumber('1896')
+        ->setCity('Ostrava')
+        ->setZipCode('70200')
+        ->setCountry('Czechy')
+        ->setCountryCode('cz')
         ->setContactPerson('Jan Kowalski')
-        ->setEmail('my@email.com')
+        ->setEmail('login@email.com')
         ->setPhone('48500600700');
 
     $parcel = $courier->makeParcel();
@@ -59,15 +59,17 @@
             ->setParcel($parcel)
             ->setContent('Zawartość przesyłki');
 
-    try{
-        /**
-        * @return array | Indetyfikatory dotyczace przesylki
-        */
+    try {
         $response = $courier->createShipment($shipment);
-        echo $response['referenceId']; // Utworzony wewnetrzny idetyfikator zamowienia
-        echo $response['shipmentId']; // Zewnetrzny idetyfikator zamowienia
+        if($response->hasErrors()) {
+            var_dump($response->getFirstError()->getMessage());
+        } else {
+            var_dump($response->referenceId); // Utworzony wewnetrzny idetyfikator zamowienia
+            var_dump($response->shipmentId); // Zewnetrzny idetyfikator zamowienia
+        }
+
     } catch (\Exception $e) {
-        echo $e->getMessage();
+        var_dump($e->getMessage());
     }
 ```
 
@@ -78,17 +80,18 @@
      * Init Courier
      */
     $booking = $courier->makeBooking();
-    $booking->setShipmentId('1111');
-    try{
-        /**
-        * @return array | Indetyfikatory dotyczace przesylki
-        */
+    $booking->setShipmentId('123456');
+    try {
         $response = $courier->postShipment($booking);
-        echo $response['referenceId']; // Utworzony wewnetrzny idetyfikator zamowienia
-        echo $response['shipmentId']; // Zewnetrzny idetyfikator zamowienia
-        echo $response['trackingId']; // Zewnetrzny idetyfikator sledzenia przesylki
+        if($response->hasErrors()) {
+            var_dump($response->getFirstError()->getMessage());
+        } else {
+            var_dump($response->shipmentId); // Zewnetrzny idetyfikator zamowienia
+            var_dump($response->trackingId); // Zewnetrzny idetyfikator sledzenia przesylki
+            var_dump($response->trackingBarcode); // Zewnetrzny idetyfikator sledzenia przesylki
+        }
     } catch (\Exception $e) {
-        echo $e->getMessage();
+        var_dump($e->getMessage());
     }
 ```
 
@@ -98,30 +101,34 @@
     /**
      * Init Courier
      */
-    try{
-        /**
-        * @return string | Nazwa statusu
-        */
-        $status = $courier->getStatus('1111');
+    try {
+        $response = $courier->getStatus('123456');
+        if($response->hasErrors()) {
+            var_dump($response->getFirstError()->getMessage());
+        } else {
+            var_dump((string) $response);
+        }
     } catch (\Exception $e) {
-        echo $e->getMessage();
+        var_dump($e->getMessage());
     }
 ```
-
 
 ## GetLabel
 
 ```php
-    /**
-     * Init Courier
-     */
-    try{
+    try {
         /**
-         * Shipment musi zostac potwierdzony (postShipment) w przeciwnym wypadku otrzymamy błąd o "Brak odpowiedniej przesyłki"
-         * @return string | Plik z etykietami (zakodowany MIME base64)
+         * Shipment musi zostac potwierdzony (postShipment) 
+         * w przeciwnym wypadku otrzymamy błąd
+         * o "Brak odpowiedniej przesyłki"
         */
-        $label = $courier->getLabel('1111');
+        $response = $courier->getLabel('123456');
+        if($response->hasErrors()) {
+            var_dump($response->getFirstError()->getMessage());
+        } else {
+            var_dump((string) $response);
+        }
     } catch (\Exception $e) {
-        echo $e->getMessage();
+        var_dump($e->getMessage());
     }
 ```
