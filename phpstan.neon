@@ -4,6 +4,6 @@ parameters:
 		- src
 		- tests
 	universalObjectCratesClasses:
-		- \ArrayObject
+		- ArrayObject
 		- Sylapi\Courier\Contracts\Response
 	checkGenericClassInNonGenericObjectType: false

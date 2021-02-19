@@ -34,6 +34,11 @@
     },
     "autoload-dev": {
         "psr-4": { "Sylapi\\Courier\\Olza\\Tests\\": "tests/" }
-    },     
+    },
+    "scripts": {
+        "tests": "vendor/bin/phpunit",
+        "phpstan": "vendor/bin/phpstan analyse src tests",
+        "coverage": "XDEBUG_MODE=coverage  vendor/bin/phpunit --coverage-html ./coverage/"
+    },    
     "prefer-stable": false
 }
