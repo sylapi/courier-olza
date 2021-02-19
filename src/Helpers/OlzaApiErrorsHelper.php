@@ -24,12 +24,11 @@ class OlzaApiErrorsHelper
     public static function toString(ArrayObject $errors): string
     {
         $iterator = $errors->getIterator();
-        $message = '';
+        $messages = [];
         for ($iterator; $iterator->valid(); $iterator->next()) {
-            $message .= (strlen($message) > 0) ? self::SEPARATOR : '';
-            $message .= $iterator->key().' => '.$iterator->current()->getMessage();
+            $messages[] = $iterator->current()->getMessage();
         }
 
-        return $message;
+        return implode(self::SEPARATOR, $messages);
     }
 }
