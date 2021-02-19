@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=7.3.0",
+        "php": ">=7.4.0",
         "sylapi/courier": "@dev",
         "develart-projects/olza-logisctic-api-client": "1.1.*"
     },
@@ -38,7 +38,8 @@
     "scripts": {
         "tests": "vendor/bin/phpunit",
         "phpstan": "vendor/bin/phpstan analyse src tests",
-        "coverage": "XDEBUG_MODE=coverage  vendor/bin/phpunit --coverage-html ./coverage/"
+        "coverage": "XDEBUG_MODE=coverage  vendor/bin/phpunit --verbose --coverage-text",
+        "coverage-html": "XDEBUG_MODE=coverage  vendor/bin/phpunit --coverage-html ./coverage/"
     },    
     "prefer-stable": false
 }
