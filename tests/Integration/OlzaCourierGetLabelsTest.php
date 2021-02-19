@@ -1,6 +1,6 @@
 <?php
 
-namespace Sylapi\Courier\Olza\Tests;
+namespace Sylapi\Courier\Olza\Tests\Integration;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Contracts\Label;
