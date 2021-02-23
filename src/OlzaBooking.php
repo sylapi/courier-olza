@@ -8,4 +8,8 @@ use Sylapi\Courier\Abstracts\Booking;
 
 class OlzaBooking extends Booking
 {
+    public function validate(): bool
+    {
+        return true;
+    }
 }
