@@ -1,18 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
 use Sylapi\Courier\Abstracts\Enum;
 
-class OlzaSpeditionCode extends Enum{
+class OlzaSpeditionCode extends Enum
+{
     const GLS = 'GLS'; // GLS
     const CP = 'CP'; // Poczta Czeska - paczka polecona
     const CP_RR = 'CP-RR'; // Poczta Czeska - list polecony
     const CP_NP = 'CP-NP'; // Poczta Czeska - paczka na pocztę
     const SP = 'SP'; // Poczta Słowacka - kurier ekspresowy
     const DPD = 'DPD'; // DPD
-    const PPL = 'PPL'; // PPL - paleta 
+    const PPL = 'PPL'; // PPL - paleta
     const ZAS = 'ZAS'; // Zásilkovna - miejsce odbioru
     const ZAS_P = 'ZAS-P'; // Zásilkovna - przesyłka pocztowa na adres
     const ZAS_K = 'ZAS-K'; // Zásilkovna - przesyłka kurierska na adres
