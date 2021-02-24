@@ -16,16 +16,10 @@
     ],
     "require": {
         "php": ">=7.4.0",
-        "sylapi/courier": "dev-new",
+        "sylapi/courier": "2.0.*",
         "develart-projects/olza-logisctic-api-client": "1.1.*",
         "rakit/validation": "^1.4"
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/sylapi/courier.git"
-        }
-    ],    
+    },  
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "phpstan/phpstan": "^0.12.77"
