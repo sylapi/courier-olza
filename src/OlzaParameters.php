@@ -6,13 +6,13 @@ namespace Sylapi\Courier\Olza;
 
 use ArrayObject;
 use Rakit\Validation\Validator;
-use Sylapi\Courier\Traits\Validatable;
 use Sylapi\Courier\Contracts\Validatable as ValidatableContract;
+use Sylapi\Courier\Traits\Validatable;
 
 class OlzaParameters extends ArrayObject implements ValidatableContract
 {
     use Validatable;
-    
+
     const DEFAULT_LABEL_TYPE = 'A4';
 
     public $labelType;
@@ -38,25 +38,27 @@ class OlzaParameters extends ArrayObject implements ValidatableContract
     public function validate(): bool
     {
         $rules = [
-            'login' => 'required',
-            'password' => 'required',
+            'login'         => 'required',
+            'password'      => 'required',
             'speditionCode' => 'required|in:GLS,CP,CP-RR,CP-NP,SP,DPD,PPL,ZAS-P,ZAS-K,ZAS-D,ZAS-C,ZAS-B,ZAS-COL,GEIS-P,BMCG-IPK,BMCG-IPKP,BMCG-DHL,BMCG-PPK,BMCG-PPE,BMCG-UC,BMCG-HUP,BMCG-FAN,BMCG-INT,BMCG-INT-PP,ZAS-ECONT-HD,ZAS-ECONT-PP,ZAS-ECONT-BOX,ZAS-ACS-HD,ZAS-ACS-PP,ZAS-SPEEDY-PP,ZAS-SPEEDY-HD',
-            'shipmentType' => 'required|in:DIRECT,WAREHOUSE'
+            'shipmentType'  => 'required|in:DIRECT,WAREHOUSE',
         ];
         $data = [
-            'login' => $this->login ?? null,
-            'password' => $this->password ?? null,
+            'login'         => $this->login ?? null,
+            'password'      => $this->password ?? null,
             'speditionCode' => $this->speditionCode ?? null,
-            'shipmentType' => $this->shipmentType ?? null
+            'shipmentType'  => $this->shipmentType ?? null,
         ];
-        
-        $validator = new Validator;
+
+        $validator = new Validator();
 
         $validation = $validator->validate($data, $rules);
         if ($validation->fails()) {
             $this->setErrors($validation->errors()->toArray());
+
             return false;
         }
+
         return true;
     }
 }

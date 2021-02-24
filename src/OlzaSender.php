@@ -12,24 +12,26 @@ class OlzaSender extends Sender
     public function validate(): bool
     {
         $rules = [
-            'fullName' => 'required',
-            'address' => 'required',
+            'fullName'    => 'required',
+            'address'     => 'required',
             'countryCode' => 'required|min:2|max:2',
-            'city' => 'required',
-            'zipCode' => 'required',
-            'email' => 'nullable|email',
-            'phone' => 'required'
+            'city'        => 'required',
+            'zipCode'     => 'required',
+            'email'       => 'nullable|email',
+            'phone'       => 'required',
         ];
-        
+
         $data = $this->toArray();
-        
-        $validator = new Validator;
+
+        $validator = new Validator();
 
         $validation = $validator->validate($data, $rules);
         if ($validation->fails()) {
             $this->setErrors($validation->errors()->toArray());
+
             return false;
         }
-        return true;        
+
+        return true;
     }
 }

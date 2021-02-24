@@ -12,19 +12,21 @@ class OlzaBooking extends Booking
     public function validate(): bool
     {
         $rules = [
-            'shipmentId' => 'required'
+            'shipmentId' => 'required',
         ];
         $data = [
-            'shipmentId' => $this->getShipmentId()
+            'shipmentId' => $this->getShipmentId(),
         ];
-        
-        $validator = new Validator;
+
+        $validator = new Validator();
 
         $validation = $validator->validate($data, $rules);
         if ($validation->fails()) {
             $this->setErrors($validation->errors()->toArray());
+
             return false;
         }
+
         return true;
     }
 }
