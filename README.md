@@ -1,5 +1,7 @@
 # Courier-olza
 
+![example branch parameter](https://github.com/sylapi/courier-olza/workflows/test.yml/badge.svg?branch=new)
+
 ## Methody
 
 ### Init
