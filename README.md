@@ -1,6 +1,8 @@
 # Courier-olza
 
-## Init
+## Methody
+
+### Init
 
 ```php
     /**
@@ -18,7 +20,7 @@
 
 ```
 
-## CreateShipment
+### CreateShipment
 
 ```php
     $sender = $courier->makeSender();
@@ -73,7 +75,7 @@
     }
 ```
 
-## PostShipment
+### PostShipment
 
 ```php
     /**
@@ -95,7 +97,7 @@
     }
 ```
 
-## GetStatus
+### GetStatus
 
 ```php
     /**
@@ -113,7 +115,7 @@
     }
 ```
 
-## GetLabel
+### GetLabel
 
 ```php
     try {
@@ -132,3 +134,58 @@
         var_dump($e->getMessage());
     }
 ```
+
+## ENUMS
+
+### ShipmentType
+
+| WARTOŚĆ | OPIS |
+| ------ | ------ |
+| DIRECT | Bezpośrednia przesyłka |
+| WAREHOUSE | Z magazynu OlzaLogistic |
+
+### SpeditionCode
+
+| WARTOŚĆ | OPIS |
+| ------ | ------ |
+| GLS | GLS |
+| CP | Poczta Czeska - list polecony |
+| CP-RR | Poczta Czeska - list polecony |
+| CP-NP | Poczta Czeska - paczka na pocztę |
+| SP | Poczta Słowacka - kurier ekspresowy |
+| DPD | DPD |
+| PPL | PPL - paleta |
+| ZAS | Zásilkovna - miejsce odbioru |
+| ZAS-P | Zásilkovna - przesyłka pocztowa na adres |
+| ZAS-K | Zásilkovna - przesyłka kurierska na adres |
+| ZAS-D | Zásilkovna - na adres DPD |
+| ZAS-C | Zásilkovna - Cargus |
+| ZAS-B | Zásilkovna - best delivery |
+| ZAS-COL | Coletaria - pick-up point |
+| GEIS-P | Geis - przesyłka na palecie |
+| BMCG-IPK | InPost Kuriér |
+| BMCG-IPKP | InPost - Paczkomaty |
+| BMCG-DHL | DHL |
+| BMCG-PPK | Pocztex Kurier 48 |
+| BMCG-PPE | Pocztex Ekspres 24 |
+| BMCG-UC | Cargus |
+| BMCG-HUP | Maďarská Pošta - business parcel |
+| BMCG-FAN | FAN Courier - home delivery |
+| BMCG-INT |  WE|DO (In Time) |
+| BMCG-INT-PP | WE|DO (In Time) - výdejní |
+| ZAS-ECONT-HD | Econt - home delivery |
+| ZAS-ECONT-PP | Econt - pick-up point |
+| ZAS-ACS-HD | ACS - home delivery |
+| ZAS-ACS-PP | ACS - pick-up point |
+| ZAS-SPEEDY-PP | Speedy - pick-up point |
+| ZAS-SPEEDY-HD | Speedy - home delivery |
+
+
+## Komendy
+
+| KOMENDA | OPIS |
+| ------ | ------ |
+| composer tests | Testy |
+| composer phpstan |  PHPStan |
+| composer coverage | PHPUnit Coverage |
+| composer coverage-html | PHPUnit Coverage HTML (DIR: ./coverage/) |
