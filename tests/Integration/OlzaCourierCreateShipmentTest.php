@@ -26,6 +26,7 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
         $shipmentMock->method('getReceiver')->willReturn($receiverMock);
         $shipmentMock->method('getParcel')->willReturn($parcelMock);
         $shipmentMock->method('getContent')->willReturn('Description');
+        $shipmentMock->method('validate')->willReturn(true);
 
         return $shipmentMock;
     }
@@ -44,7 +45,6 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
         $this->assertObjectHasAttribute('referenceId', $response);
         $this->assertObjectHasAttribute('shipmentId', $response);
         $this->assertEquals($response->shipmentId, '123');
-        $this->assertTrue(true);
     }
 
     public function testCreateShipmentFailure(): void

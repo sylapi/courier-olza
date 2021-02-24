@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use OlzaApiClient\Entities\Helpers\GetStatusesEntity;
-use OlzaApiClient\Entities\Response\ApiBatchResponse;
-use Sylapi\Courier\Contracts\CourierGetStatuses;
-use Sylapi\Courier\Contracts\Status as StatusContract;
 use Sylapi\Courier\Entities\Status;
 use Sylapi\Courier\Enums\StatusType;
+use Sylapi\Courier\Helpers\ResponseHelper;
+use Sylapi\Courier\Contracts\CourierGetStatuses;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
+use OlzaApiClient\Entities\Helpers\GetStatusesEntity;
+use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use Sylapi\Courier\Contracts\Status as StatusContract;
 
 class OlzaCourierGetStatuses implements CourierGetStatuses
 {
@@ -28,18 +29,14 @@ class OlzaCourierGetStatuses implements CourierGetStatuses
             $apiResponse = $this->getApiBatchResponse([$shipmentId]);
         } catch (\Exception $e) {
             $status = new Status(StatusType::APP_RESPONSE_ERROR);
-            $status->addError($e);
-
+            ResponseHelper::pushErrorsToResponse($status,[$e]);
             return $status;
         }
 
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
             $status = new Status(StatusType::APP_RESPONSE_ERROR);
-            $iterator = $apiResponse->getErrorList()->getIterator();
-            for ($iterator; $iterator->valid(); $iterator->next()) {
-                $status->addError($iterator->current());
-            }
-
+            $errors = OlzaApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
+            ResponseHelper::pushErrorsToResponse($status,$errors);
             return $status;
         }
 

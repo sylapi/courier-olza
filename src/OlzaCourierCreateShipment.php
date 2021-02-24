@@ -13,6 +13,8 @@ use Sylapi\Courier\Entities\Response;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Helpers\ReferenceHelper;
 use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
+use Sylapi\Courier\Olza\Helpers\OlzaValidateErrorsHelper;
+use Sylapi\Courier\Helpers\ResponseHelper;
 
 class OlzaCourierCreateShipment implements CourierCreateShipment
 {
@@ -26,21 +28,21 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
     public function createShipment(Shipment $shipment): ResponseContract
     {
         $response = new Response();
-
+        if(!$shipment->validate()) {
+            $errors = OlzaValidateErrorsHelper::toArrayExceptions($shipment->getErrors());
+            ResponseHelper::pushErrorsToResponse($response, $errors);
+            return $response;
+        }
         try {
             $apiResponse = $this->getApiBatchResponse($shipment);
         } catch (\Exception $e) {
-            $response->addError($e);
-
+            ResponseHelper::pushErrorsToResponse($response,[$e]);
             return $response;
         }
 
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $iterator = $apiResponse->getErrorList()->getIterator();
-            for ($iterator; $iterator->valid(); $iterator->next()) {
-                $response->addError($iterator->current());
-            }
-
+            $errors = OlzaApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
+            ResponseHelper::pushErrorsToResponse($response,$errors);
             return $response;
         }
 
@@ -48,7 +50,6 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
 
         $response->referenceId = $shipment->getApiCustomRef();
         $response->shipmentId = $shipment->getShipmentId();
-
         return $response;
     }
 

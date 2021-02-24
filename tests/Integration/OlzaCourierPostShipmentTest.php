@@ -12,6 +12,15 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
 {
     use OlzaSessionTrait;
 
+    private function getBookingMock($shipmentId)
+    {
+        $bookingMock = $this->createMock(OlzaBooking::class);
+        $bookingMock->method('getShipmentId')->willReturn($shipmentId);
+        $bookingMock->method('validate')->willReturn(true);
+        return $bookingMock;
+    }
+
+
     public function testPostShipmentSuccess(): void
     {
         $olzaCourierPostShipment = new OlzaCourierPostShipment(
@@ -21,9 +30,7 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
         );
 
         $shipmentId = '123';
-
-        $booking = new OlzaBooking();
-        $booking->setShipmentId($shipmentId);
+        $booking = $this->getBookingMock($shipmentId);
         $response = $olzaCourierPostShipment->postShipment($booking);
 
         $this->assertInstanceOf(Response::class, $response);
@@ -44,8 +51,7 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
         );
 
         $shipmentId = '123';
-        $booking = new OlzaBooking();
-        $booking->setShipmentId($shipmentId);
+        $booking = $this->getBookingMock($shipmentId);
         $response = $olzaCourierPostShipment->postShipment($booking);
         $this->assertTrue($response->hasErrors());
     }

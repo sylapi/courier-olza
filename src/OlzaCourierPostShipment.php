@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
-use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\Booking;
-use Sylapi\Courier\Contracts\CourierPostShipment;
-use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Entities\Response;
+use Sylapi\Courier\Helpers\ResponseHelper;
+use Sylapi\Courier\Contracts\CourierPostShipment;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
+use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
+use Sylapi\Courier\Olza\Helpers\OlzaValidateErrorsHelper;
+use Sylapi\Courier\Contracts\Response as ResponseContract;
 
 class OlzaCourierPostShipment implements CourierPostShipment
 {
@@ -25,21 +27,23 @@ class OlzaCourierPostShipment implements CourierPostShipment
     public function postShipment(Booking $booking): ResponseContract
     {
         $response = new Response();
+        
+        if(!$booking->validate()) {
+            $errors = OlzaValidateErrorsHelper::toArrayExceptions($response->getErrors());
+            ResponseHelper::pushErrorsToResponse($response, $errors);
+            return $response;
+        }
 
         try {
             $apiResponse = $this->getApiBatchResponse([$booking->getShipmentId()]);
         } catch (\Exception $e) {
-            $response->addError($e);
-
+            ResponseHelper::pushErrorsToResponse($response,[$e]);
             return $response;
         }
 
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $iterator = $apiResponse->getErrorList()->getIterator();
-            for ($iterator; $iterator->valid(); $iterator->next()) {
-                $response->addError($iterator->current());
-            }
-
+            $errors = OlzaApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
+            ResponseHelper::pushErrorsToResponse($response,$errors);
             return $response;
         }
 

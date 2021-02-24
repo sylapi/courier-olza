@@ -8,21 +8,19 @@ use ArrayObject;
 
 class OlzaApiErrorsHelper
 {
-    const SEPARATOR = '|';
-
     public static function hasErrors(ArrayObject $errors): bool
     {
         return $errors->count() > 0;
     }
 
-    public static function toString(ArrayObject $errors): string
+    public static function toArrayExceptions(ArrayObject $errors): array
     {
+        $arr = [];
         $iterator = $errors->getIterator();
-        $messages = [];
         for ($iterator; $iterator->valid(); $iterator->next()) {
-            $messages[] = $iterator->current()->getMessage();
+            $arr[] = $iterator->current();
         }
 
-        return implode(self::SEPARATOR, $messages);
+        return $arr;
     }
 }
