@@ -18,25 +18,27 @@ class OlzaShipment extends Shipment
     {
         $rules = [
             'quantity' => 'required|min:1|max:1',
-            'parcel' => 'required',
-            'sender' => 'required',
-            'receiver' => 'required'
+            'parcel'   => 'required',
+            'sender'   => 'required',
+            'receiver' => 'required',
         ];
 
         $data = [
             'quantity' => $this->getQuantity(),
-            'parcel' => $this->getParcel(),
-            'sender' => $this->getSender(),
-            'receiver' => $this->getReceiver()
+            'parcel'   => $this->getParcel(),
+            'sender'   => $this->getSender(),
+            'receiver' => $this->getReceiver(),
         ];
 
-        $validator = new Validator;
+        $validator = new Validator();
 
         $validation = $validator->validate($data, $rules);
         if ($validation->fails()) {
             $this->setErrors($validation->errors()->toArray());
+
             return false;
         }
+
         return true;
     }
 }

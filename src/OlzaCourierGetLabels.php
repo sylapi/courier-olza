@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use Sylapi\Courier\Entities\Label;
-use Sylapi\Courier\Helpers\ResponseHelper;
-use Sylapi\Courier\Contracts\CourierGetLabels;
-use Sylapi\Courier\Exceptions\TransportException;
 use OlzaApiClient\Entities\Helpers\GetLabelsEnity;
-use Sylapi\Courier\Contracts\Label as LabelContract;
-use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use Sylapi\Courier\Contracts\CourierGetLabels;
+use Sylapi\Courier\Contracts\Label as LabelContract;
+use Sylapi\Courier\Entities\Label;
+use Sylapi\Courier\Exceptions\TransportException;
+use Sylapi\Courier\Helpers\ResponseHelper;
+use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
 
 class OlzaCourierGetLabels implements CourierGetLabels
 {
@@ -28,14 +28,16 @@ class OlzaCourierGetLabels implements CourierGetLabels
             $apiResponse = $this->getApiBatchResponse([$shipmentId]);
         } catch (\Exception $e) {
             $label = new Label(null);
-            ResponseHelper::pushErrorsToResponse($label,[$e]);
+            ResponseHelper::pushErrorsToResponse($label, [$e]);
+
             return $label;
         }
 
         if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
             $label = new Label(null);
             $errors = OlzaApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
-            ResponseHelper::pushErrorsToResponse($label,$errors);
+            ResponseHelper::pushErrorsToResponse($label, $errors);
+
             return $label;
         }
 

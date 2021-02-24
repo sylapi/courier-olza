@@ -17,9 +17,9 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
         $bookingMock = $this->createMock(OlzaBooking::class);
         $bookingMock->method('getShipmentId')->willReturn($shipmentId);
         $bookingMock->method('validate')->willReturn(true);
+
         return $bookingMock;
     }
-
 
     public function testPostShipmentSuccess(): void
     {
