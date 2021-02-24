@@ -1,6 +1,6 @@
 # Courier-olza
 
-[![Tests Actions Status branch parameter](https://github.com/sylapi/courier-olza/workflows/test/badge.svg?branch=new)](https://github.com/sylapi/courier-olza/actions)
+[![Tests](https://github.com/sylapi/courier-olza/actions/workflows/test.yaml/badge.svg?branch=new&event=push)](https://github.com/sylapi/courier-olza/actions/workflows/test.yaml)
 
 ## Methody
 
