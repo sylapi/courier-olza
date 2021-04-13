@@ -34,7 +34,7 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
 
             return $response;
         }
-        
+
         try {
             $apiResponse = $this->getApiBatchResponse($shipment);
         } catch (\Exception $e) {
@@ -96,7 +96,7 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
             ->setWeight($shipment->getWeight())
             ->setShipmentDescription($shipment->getContent());
 
-        if($parameters->hasProperty('cod') 
+        if ($parameters->hasProperty('cod')
             && is_array($parameters->cod)
             && isset($parameters->cod['codAmount'])
             && isset($parameters->cod['codReference'])
@@ -105,10 +105,10 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
                                     ->setCodAmount($parameters->cod['codAmount']);
         }
 
-        if($parameters->hasProperty('services') 
+        if ($parameters->hasProperty('services')
             && is_array($parameters->services)
-        ){
-            foreach($parameters->services as $serviceKey => $serviceValue) {
+        ) {
+            foreach ($parameters->services as $serviceKey => $serviceValue) {
                 $newShipmentEnity = $newShipmentEnity->addService($serviceKey, $serviceValue);
             }
         }
