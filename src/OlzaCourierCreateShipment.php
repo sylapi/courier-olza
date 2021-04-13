@@ -34,7 +34,7 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
 
             return $response;
         }
-
+        
         try {
             $apiResponse = $this->getApiBatchResponse($shipment);
         } catch (\Exception $e) {
@@ -79,7 +79,7 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
         $parameters = $this->session->parameters();
 
         $newShipmentEnity = new NewShipmentEnity();
-        $newShipmentEnity->setApiCustomRef(ReferenceHelper::generate())
+        $newShipmentEnity = $newShipmentEnity->setApiCustomRef(ReferenceHelper::generate())
             ->setSenderCountry($shipment->getSender()->getCountryCode())
             ->setRecipientCountry($shipment->getReceiver()->getCountryCode())
             ->setSpeditionCode($parameters->speditionCode)
@@ -95,6 +95,23 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
             ->setPackageCount($shipment->getQuantity())
             ->setWeight($shipment->getWeight())
             ->setShipmentDescription($shipment->getContent());
+
+        if($parameters->hasProperty('cod') 
+            && is_array($parameters->cod)
+            && isset($parameters->cod['codAmount'])
+            && isset($parameters->cod['codReference'])
+        ) {
+            $newShipmentEnity = $newShipmentEnity->setCodReference($parameters->cod['codReference'])
+                                    ->setCodAmount($parameters->cod['codAmount']);
+        }
+
+        if($parameters->hasProperty('services') 
+            && is_array($parameters->services)
+        ){
+            foreach($parameters->services as $serviceKey => $serviceValue) {
+                $newShipmentEnity = $newShipmentEnity->addService($serviceKey, $serviceValue);
+            }
+        }
 
         return $newShipmentEnity;
     }

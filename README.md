@@ -17,7 +17,22 @@
         'requestLanguage' => 'pl',
         'labelType' => 'A4',
         'speditionCode' => 'GLS',
-        'shipmentType' => 'DIRECT'
+        'shipmentType' => 'DIRECT',
+        // 'cod' => [
+        //     'codAmount' => 50,
+        //     'codReference' => '0123456789'
+        // ],
+        // 'services' => [
+            // 'T12' => true,
+            // 'XS' => true,
+            // 'S12' => true,
+            // 'S10' => true,
+            // 'SAT' => true,
+            // 'PALLET' => true,
+            // 'CSP' => true,
+            // 'SM2' => '+420123456789',
+            // 'INS' => 5000
+        // ]
     ]);
 
 ```
