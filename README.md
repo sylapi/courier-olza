@@ -17,7 +17,7 @@
         'requestLanguage' => 'pl',
         'labelType' => 'A4',
         'speditionCode' => 'GLS',
-        'shipmentType' => 'DIRECT',
+        'shipmentType' => 'WAREHOUSE',
         // 'cod' => [
         //     'codAmount' => 50,
         //     'codReference' => '0123456789'
@@ -151,6 +151,47 @@
         var_dump($e->getMessage());
     }
 ```
+
+# Zásilkovna (miejsce odbioru)
+
+### Init
+
+```php
+    /**
+    * @return Sylapi\Courier\Courier
+    */
+    $courier = CourierFactory::create('Olza',[
+        'login' => 'mylogin',
+        'password' => 'mypassword',
+        'sandbox' => true,
+        'requestLanguage' => 'pl',
+        'labelType' => 'A4',
+        'speditionCode' => 'ZAS',
+        'shipmentType' => 'WAREHOUSE',
+        'pickupPlaceId' => '1231' //ID Punktu odbioru
+    ]);
+
+```
+
+Dostępne są dwa sposoby, jak można wdrożyć punkty odbioru z grupy Packeta w sklepie internetowym:
+
+1. Gotowy widget https://widget.packeta.com/v5/#/
+
+Packeta udostępnia w tym celu konfigurator, który można wykorzystać do wdrożenia punktów odbioru.
+
+- Konfigurator https://widget.packeta.com/www/configurator/
+
+- Konfigurator z użyciem własnych stylów CSS https://widget.packeta.com/www/style-configurator/
+
+Dzięki niemu można zdefiniować właściwości widgetu, który pojawi się na stronie i zdobyć kod do podpięcia w koszyku zakupowym.
+
+Manual dotyczący implementacji widgetu znajdziemy pod linkiem: https://docs.packetery.com/01-pickup-point-selection/02-widget-v6.html
+
+2. Lista punktów z pliku online
+
+Można skonfigurować pola wyboru punktów odbioru we własnym zakresie, można posłużyć się plikiem online, który zawiera listę wszystkich punktów odbioru niezależnie od kraju docelowego. Dostępne formaty plików oraz adresy URL są opisane w dokumentacji Packeta pod tym linkiem https://docs.packetery.com/01-pickup-point-selection/04-branch-export-v4.html
+
+Informacje dotyczące zarządzanie punktami odbioru: https://docs.packetery.com/05-eshop-providers/01-eshop-provider.html#toc-pick-up-point-management
 
 ## ENUMS
 
