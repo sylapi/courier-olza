@@ -95,8 +95,8 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
             ->setPackageCount($shipment->getQuantity())
             ->setWeight($shipment->getWeight())
             ->setShipmentDescription($shipment->getContent());
-    
-        if($parameters->hasProperty('pickupPlaceId')) {
+
+        if ($parameters->hasProperty('pickupPlaceId')) {
             $newShipmentEnity = $newShipmentEnity->setPickupPlaceId($parameters->pickupPlaceId);
         }
 
