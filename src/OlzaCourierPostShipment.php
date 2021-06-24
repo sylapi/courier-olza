@@ -53,9 +53,12 @@ class OlzaCourierPostShipment implements CourierPostShipment
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
+        var_dump($parcel);
+
         $response->shipmentId = $parcel->getShipmentId();
         $response->trackingId = $parcel->getSpeditionExternalId();
         $response->trackingBarcode = $parcel->getSpeditionExternalBarcode();
+        $response->trackingUrl = $parcel->getSpeditionExternalTrackingUrl();
 
         return $response;
     }

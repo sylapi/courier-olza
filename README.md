@@ -20,7 +20,7 @@
         'shipmentType' => 'WAREHOUSE',
         // 'cod' => [
         //     'codAmount' => 50,
-        //     'codReference' => '0123456789'
+        //     'codReference' => '0123456789' // COD ID numer dla klienta, e.g.: 1122334455 (opcja)
         // ],
         // 'services' => [
             // 'T12' => true,
@@ -108,6 +108,7 @@
             var_dump($response->shipmentId); // Zewnetrzny idetyfikator zamowienia
             var_dump($response->trackingId); // Zewnetrzny idetyfikator sledzenia przesylki
             var_dump($response->trackingBarcode); // Zewnetrzny idetyfikator sledzenia przesylki
+            var_dump($response->trackingUrl); // Zewnetrzny URL sledzenia przesylki
         }
     } catch (\Exception $e) {
         var_dump($e->getMessage());

@@ -17,7 +17,7 @@
     "require": {
         "php": ">=7.4.0",
         "sylapi/courier": "^2.0",
-        "develart-projects/olza-logisctic-api-client": "1.2.*",
+        "develart-projects/olza-logisctic-api-client": "1.5.*",
         "rakit/validation": "^1.4"
     },  
     "require-dev": {
