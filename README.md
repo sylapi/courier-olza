@@ -63,6 +63,7 @@
         ->setApartmentNumber('1896')
         ->setCity('Ostrava')
         ->setZipCode('70200')
+        ->setProvince('XYZ')
         ->setCountry('Czechy')
         ->setCountryCode('cz')
         ->setContactPerson('Jan Kowalski')

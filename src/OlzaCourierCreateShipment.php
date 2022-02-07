@@ -91,6 +91,7 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
             ->setRecipientZipcode($shipment->getReceiver()->getZipCode())
             ->setRecipientEmail($shipment->getReceiver()->getEmail())
             ->setRecipientPhone($shipment->getReceiver()->getPhone())
+            ->setRecipientCounty($shipment->getReceiver()->getProvince())
             ->setRecipientContactPerson($shipment->getReceiver()->getContactPerson())
             ->setPackageCount($shipment->getQuantity())
             ->setWeight($shipment->getWeight())
