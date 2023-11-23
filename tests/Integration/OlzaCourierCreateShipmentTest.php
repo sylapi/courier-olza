@@ -42,8 +42,8 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
         $response = $olzaCourierCreateShipment->createShipment($this->getShipmentMock());
 
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertObjectHasAttribute('referenceId', $response);
-        $this->assertObjectHasAttribute('shipmentId', $response);
+        $this->assertObjectHasProperty('referenceId', $response);
+        $this->assertObjectHasProperty('shipmentId', $response);
         $this->assertEquals($response->shipmentId, '123');
     }
 

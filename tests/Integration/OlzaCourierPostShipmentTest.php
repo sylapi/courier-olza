@@ -34,11 +34,11 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
         $response = $olzaCourierPostShipment->postShipment($booking);
 
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertObjectHasAttribute('shipmentId', $response);
+        $this->assertObjectHasProperty('shipmentId', $response);
         $this->assertEquals($response->shipmentId, $shipmentId);
-        $this->assertObjectHasAttribute('trackingId', $response);
+        $this->assertObjectHasProperty('trackingId', $response);
         $this->assertEquals($response->trackingId, '00014459331');
-        $this->assertObjectHasAttribute('trackingBarcode', $response);
+        $this->assertObjectHasProperty('trackingBarcode', $response);
         $this->assertEquals($response->trackingBarcode, '000144593313');
     }
 
