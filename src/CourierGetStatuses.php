@@ -28,14 +28,14 @@ class CourierGetStatuses implements CourierGetStatusesContract
         try {
             $apiResponse = $this->getApiBatchResponse([$shipmentId]);
         } catch (\Exception $e) {
-            $status = new Status(StatusType::APP_RESPONSE_ERROR);
+            $status = new Status(StatusType::APP_RESPONSE_ERROR->value);
             ResponseHelper::pushErrorsToResponse($status, [$e]);
 
             return $status;
         }
 
         if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $status = new Status(StatusType::APP_RESPONSE_ERROR);
+            $status = new Status(StatusType::APP_RESPONSE_ERROR->value);
             $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
             ResponseHelper::pushErrorsToResponse($status, $errors);
 

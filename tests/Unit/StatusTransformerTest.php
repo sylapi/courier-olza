@@ -11,6 +11,6 @@ class StatusTransformerTest extends PHPUnitTestCase
     public function testStatusTransformer(): void
     {
         $olzaStatusTransformer = new StatusTransformer('STORNO');
-        $this->assertEquals(StatusType::CANCELLED, (string) $olzaStatusTransformer);
+        $this->assertEquals(StatusType::CANCELLED->value, (string) $olzaStatusTransformer);
     }
 }

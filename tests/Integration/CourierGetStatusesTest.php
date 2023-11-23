@@ -20,7 +20,7 @@ class CourierGetStatusesTest extends PHPUnitTestCase
         );
 
         $response = $olzaCourierGetStatuses->getStatus('123');
-        $this->assertEquals($response, StatusType::SENT);
+        $this->assertEquals($response, StatusType::SENT->value);
     }
 
     public function testGetStatusFailure(): void
@@ -32,7 +32,7 @@ class CourierGetStatusesTest extends PHPUnitTestCase
         );
 
         $response = $olzaCourierGetStatuses->getStatus('123');
-        $this->assertEquals($response, StatusType::APP_RESPONSE_ERROR);
+        $this->assertEquals($response, StatusType::APP_RESPONSE_ERROR->value);
         $this->assertTrue($response->hasErrors());
     }
 }
