@@ -4,16 +4,16 @@ namespace Sylapi\Courier\Olza\Tests\Integration;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Contracts\Label;
-use Sylapi\Courier\Olza\OlzaCourierGetLabels;
-use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
+use Sylapi\Courier\Olza\CourierGetLabels;
+use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
-class OlzaCourierGetLabelsTest extends PHPUnitTestCase
+class CourierGetLabelsTest extends PHPUnitTestCase
 {
-    use OlzaSessionTrait;
+    use SessionTrait;
 
     public function testGetLabelsSuccess(): void
     {
-        $olzaCourierGetLabels = new OlzaCourierGetLabels(
+        $olzaCourierGetLabels = new CourierGetLabels(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierGetLabelsSuccess.json']
             )
@@ -25,7 +25,7 @@ class OlzaCourierGetLabelsTest extends PHPUnitTestCase
 
     public function testGetLabelsFailure(): void
     {
-        $olzaCourierGetLabels = new OlzaCourierGetLabels(
+        $olzaCourierGetLabels = new CourierGetLabels(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierGetLabelsFailure.json']
             )

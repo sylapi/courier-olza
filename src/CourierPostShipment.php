@@ -7,19 +7,19 @@ namespace Sylapi\Courier\Olza;
 use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\Booking;
-use Sylapi\Courier\Contracts\CourierPostShipment;
+use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Entities\Response;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Helpers\ResponseHelper;
-use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
-use Sylapi\Courier\Olza\Helpers\OlzaValidateErrorsHelper;
+use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
+use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
 
-class OlzaCourierPostShipment implements CourierPostShipment
+class CourierPostShipment implements CourierPostShipmentContract
 {
     private $session;
 
-    public function __construct(OlzaSession $session)
+    public function __construct(Session $session)
     {
         $this->session = $session;
     }
@@ -29,7 +29,7 @@ class OlzaCourierPostShipment implements CourierPostShipment
         $response = new Response();
 
         if (!$booking->validate()) {
-            $errors = OlzaValidateErrorsHelper::toArrayExceptions($response->getErrors());
+            $errors = ValidateErrorsHelper::toArrayExceptions($response->getErrors());
             ResponseHelper::pushErrorsToResponse($response, $errors);
 
             return $response;
@@ -43,8 +43,8 @@ class OlzaCourierPostShipment implements CourierPostShipment
             return $response;
         }
 
-        if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $errors = OlzaApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
+        if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
+            $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
             ResponseHelper::pushErrorsToResponse($response, $errors);
 
             return $response;

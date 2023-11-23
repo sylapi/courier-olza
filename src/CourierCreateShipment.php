@@ -6,21 +6,21 @@ namespace Sylapi\Courier\Olza;
 
 use OlzaApiClient\Entities\Helpers\NewShipmentEnity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
-use Sylapi\Courier\Contracts\CourierCreateShipment;
+use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\Shipment;
 use Sylapi\Courier\Entities\Response;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Helpers\ReferenceHelper;
 use Sylapi\Courier\Helpers\ResponseHelper;
-use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
-use Sylapi\Courier\Olza\Helpers\OlzaValidateErrorsHelper;
+use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
+use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
 
-class OlzaCourierCreateShipment implements CourierCreateShipment
+class CourierCreateShipment implements CourierCreateShipmentContract
 {
     private $session;
 
-    public function __construct(OlzaSession $session)
+    public function __construct(Session $session)
     {
         $this->session = $session;
     }
@@ -29,7 +29,7 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
     {
         $response = new Response();
         if (!$shipment->validate()) {
-            $errors = OlzaValidateErrorsHelper::toArrayExceptions($shipment->getErrors());
+            $errors = ValidateErrorsHelper::toArrayExceptions($shipment->getErrors());
             ResponseHelper::pushErrorsToResponse($response, $errors);
 
             return $response;
@@ -43,8 +43,8 @@ class OlzaCourierCreateShipment implements CourierCreateShipment
             return $response;
         }
 
-        if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $errors = OlzaApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
+        if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
+            $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
             ResponseHelper::pushErrorsToResponse($response, $errors);
 
             return $response;

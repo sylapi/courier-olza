@@ -4,16 +4,16 @@ namespace Sylapi\Courier\Olza\Tests\Integration;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Enums\StatusType;
-use Sylapi\Courier\Olza\OlzaCourierGetStatuses;
-use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
+use Sylapi\Courier\Olza\CourierGetStatuses;
+use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
-class OlzaCourierGetStatusesTest extends PHPUnitTestCase
+class CourierGetStatusesTest extends PHPUnitTestCase
 {
-    use OlzaSessionTrait;
+    use SessionTrait;
 
     public function testGetStatusSuccess(): void
     {
-        $olzaCourierGetStatuses = new OlzaCourierGetStatuses(
+        $olzaCourierGetStatuses = new CourierGetStatuses(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierGetStatusSuccess.json']
             )
@@ -25,7 +25,7 @@ class OlzaCourierGetStatusesTest extends PHPUnitTestCase
 
     public function testGetStatusFailure(): void
     {
-        $olzaCourierGetStatuses = new OlzaCourierGetStatuses(
+        $olzaCourierGetStatuses = new CourierGetStatuses(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierGetStatusFailure.json']
             )

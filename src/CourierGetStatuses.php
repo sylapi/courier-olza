@@ -6,19 +6,19 @@ namespace Sylapi\Courier\Olza;
 
 use OlzaApiClient\Entities\Helpers\GetStatusesEntity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
-use Sylapi\Courier\Contracts\CourierGetStatuses;
+use Sylapi\Courier\Contracts\CourierGetStatuses as CourierGetStatusesContract;
 use Sylapi\Courier\Contracts\Status as StatusContract;
 use Sylapi\Courier\Entities\Status;
 use Sylapi\Courier\Enums\StatusType;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Helpers\ResponseHelper;
-use Sylapi\Courier\Olza\Helpers\OlzaApiErrorsHelper;
+use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
 
-class OlzaCourierGetStatuses implements CourierGetStatuses
+class CourierGetStatuses implements CourierGetStatusesContract
 {
     private $session;
 
-    public function __construct(OlzaSession $session)
+    public function __construct(Session $session)
     {
         $this->session = $session;
     }
@@ -34,9 +34,9 @@ class OlzaCourierGetStatuses implements CourierGetStatuses
             return $status;
         }
 
-        if (OlzaApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
+        if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
             $status = new Status(StatusType::APP_RESPONSE_ERROR);
-            $errors = OlzaApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
+            $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
             ResponseHelper::pushErrorsToResponse($status, $errors);
 
             return $status;
@@ -45,7 +45,7 @@ class OlzaCourierGetStatuses implements CourierGetStatuses
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
-        return new Status((string) new OlzaStatusTransformer((string) $parcel->getParcelStatus()));
+        return new Status((string) new StatusTransformer((string) $parcel->getParcelStatus()));
     }
 
     private function getStatusesEntity(array $shipmentsNumbers): GetStatusesEntity

@@ -5,18 +5,23 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza;
 
 use Rakit\Validation\Validator;
-use Sylapi\Courier\Abstracts\Booking;
+use Sylapi\Courier\Abstracts\Sender as SenderAbstract;
 
-class OlzaBooking extends Booking
+class Sender extends SenderAbstract
 {
     public function validate(): bool
     {
         $rules = [
-            'shipmentId' => 'required',
+            'fullName'    => 'required',
+            'address'     => 'required',
+            'countryCode' => 'required|min:2|max:2',
+            'city'        => 'required',
+            'zipCode'     => 'required',
+            'email'       => 'nullable|email',
+            'phone'       => 'required',
         ];
-        $data = [
-            'shipmentId' => $this->getShipmentId(),
-        ];
+
+        $data = $this->toArray();
 
         $validator = new Validator();
 

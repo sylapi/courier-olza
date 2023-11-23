@@ -6,7 +6,7 @@ namespace Sylapi\Courier\Olza;
 
 use Sylapi\Courier\Abstracts\Enum;
 
-class OlzaShipmentType extends Enum
+class ShipmentType extends Enum
 {
     const DIRECT = 'DIRECT'; // DIRECT
     const WAREHOUSE = 'WAREHOUSE'; // WAREHOUSE

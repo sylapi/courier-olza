@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
+use Sylapi\Courier\Olza\Parameters;
 use GuzzleHttp\Client as HttpClient;
 use Sylapi\Courier\Olza\ApiClient\Services\Transport;
 
-class OlzaSessionFactory
+class SessionFactory
 {
     private $sessions = [];
 
     /**
-     * @var null|OlzaParameters<string,mixed>
+     * @var null|Parameters<string,mixed>
      */
     private $parameters;
 
@@ -20,7 +21,7 @@ class OlzaSessionFactory
     const API_LIVE = 'https://panel.olzalogistic.com';
     const API_SANDBOX = 'https://test.panel.olzalogistic.com';
 
-    public function session(OlzaParameters $parameters): OlzaSession
+    public function session(Parameters $parameters): Session
     {
         $this->parameters = $parameters;
         $this->parameters->apiUrl = ($this->parameters->sandbox) ? self::API_SANDBOX : self::API_LIVE;
@@ -31,6 +32,6 @@ class OlzaSessionFactory
             'base_uri' => $this->parameters->apiUrl.Transport::getApiCallUri(),
         ]);
 
-        return (isset($this->sessions[$key])) ? $this->sessions[$key] : ($this->sessions[$key] = new OlzaSession($this->parameters, $httpClient));
+        return (isset($this->sessions[$key])) ? $this->sessions[$key] : ($this->sessions[$key] = new Session($this->parameters, $httpClient));
     }
 }

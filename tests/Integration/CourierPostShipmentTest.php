@@ -4,17 +4,17 @@ namespace Sylapi\Courier\Olza\Tests\Integration;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Contracts\Response;
-use Sylapi\Courier\Olza\OlzaBooking;
-use Sylapi\Courier\Olza\OlzaCourierPostShipment;
-use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
+use Sylapi\Courier\Olza\Booking;
+use Sylapi\Courier\Olza\CourierPostShipment;
+use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
-class OlzaCourierPostShipmentTest extends PHPUnitTestCase
+class CourierPostShipmentTest extends PHPUnitTestCase
 {
-    use OlzaSessionTrait;
+    use SessionTrait;
 
     private function getBookingMock($shipmentId)
     {
-        $bookingMock = $this->createMock(OlzaBooking::class);
+        $bookingMock = $this->createMock(Booking::class);
         $bookingMock->method('getShipmentId')->willReturn($shipmentId);
         $bookingMock->method('validate')->willReturn(true);
 
@@ -23,7 +23,7 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
 
     public function testPostShipmentSuccess(): void
     {
-        $olzaCourierPostShipment = new OlzaCourierPostShipment(
+        $olzaCourierPostShipment = new CourierPostShipment(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierPostShipmentSuccess.json']
             )
@@ -44,7 +44,7 @@ class OlzaCourierPostShipmentTest extends PHPUnitTestCase
 
     public function testPostShipmentFailure(): void
     {
-        $olzaCourierPostShipment = new OlzaCourierPostShipment(
+        $olzaCourierPostShipment = new CourierPostShipment(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierPostShipmentFailure.json']
             )

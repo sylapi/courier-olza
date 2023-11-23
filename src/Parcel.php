@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza;
 
 use Rakit\Validation\Validator;
-use Sylapi\Courier\Abstracts\Parcel;
+use Sylapi\Courier\Abstracts\Parcel as ParcelAbstract;
 
-class OlzaParcel extends Parcel
+class Parcel extends ParcelAbstract
 {
     public function validate(): bool
     {

@@ -3,17 +3,17 @@
 namespace Sylapi\Courier\Olza\Tests\Unit;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Olza\OlzaParcel;
-use Sylapi\Courier\Olza\OlzaReceiver;
-use Sylapi\Courier\Olza\OlzaSender;
-use Sylapi\Courier\Olza\OlzaShipment;
+use Sylapi\Courier\Olza\Parcel;
+use Sylapi\Courier\Olza\Receiver;
+use Sylapi\Courier\Olza\Sender;
+use Sylapi\Courier\Olza\Shipment;
 
-class OlzaShipmentTest extends PHPUnitTestCase
+class ShipmentTest extends PHPUnitTestCase
 {
     public function testNumberOfPackagesIsAlwaysEqualTo1(): void
     {
-        $parcel = new OlzaParcel();
-        $shipment = new OlzaShipment();
+        $parcel = new Parcel();
+        $shipment = new Shipment();
         $shipment->setParcel($parcel);
         $shipment->setParcel($parcel);
 
@@ -22,11 +22,11 @@ class OlzaShipmentTest extends PHPUnitTestCase
 
     public function testShipmentValidate(): void
     {
-        $receiver = new OlzaReceiver();
-        $sender = new OlzaSender();
-        $parcel = new OlzaParcel();
+        $receiver = new Receiver();
+        $sender = new Sender();
+        $parcel = new Parcel();
 
-        $shipment = new OlzaShipment();
+        $shipment = new Shipment();
         $shipment->setSender($sender)
             ->setReceiver($receiver)
             ->setParcel($parcel);

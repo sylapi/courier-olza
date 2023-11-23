@@ -6,15 +6,15 @@ use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Sylapi\Courier\Olza\OlzaParameters;
-use Sylapi\Courier\Olza\OlzaSession;
+use Sylapi\Courier\Olza\Parameters;
+use Sylapi\Courier\Olza\Session;
 
-trait OlzaSessionTrait
+trait SessionTrait
 {
     /**
      * @param array<string> $responseMockFiles
      */
-    private function getSession(array $responseMockFiles): OlzaSession
+    private function getSession(array $responseMockFiles): Session
     {
         $responseMocks = [];
 
@@ -28,7 +28,7 @@ trait OlzaSessionTrait
         $handlerStack = HandlerStack::create($mock);
         $client = new HttpClient(['handler' => $handlerStack]);
 
-        $parameters = OlzaParameters::create([
+        $parameters = Parameters::create([
             'login'           => 'login',
             'password'        => 'password',
             'sandbox'         => true,
@@ -38,6 +38,6 @@ trait OlzaSessionTrait
             'shipmentType'    => 'WAREHOUSE',
         ]);
 
-        return  new OlzaSession($parameters, $client);
+        return  new Session($parameters, $client);
     }
 }

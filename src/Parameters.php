@@ -9,7 +9,7 @@ use Rakit\Validation\Validator;
 use Sylapi\Courier\Contracts\Validatable as ValidatableContract;
 use Sylapi\Courier\Traits\Validatable;
 
-class OlzaParameters extends ArrayObject implements ValidatableContract
+class Parameters extends ArrayObject implements ValidatableContract
 {
     use Validatable;
 

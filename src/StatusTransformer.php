@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use Sylapi\Courier\Abstracts\StatusTransformer;
+use Sylapi\Courier\Abstracts\StatusTransformer as StatusTransformerAbstract;
 use Sylapi\Courier\Enums\StatusType;
 
-class OlzaStatusTransformer extends StatusTransformer
+class StatusTransformer extends StatusTransformerAbstract
 {
     /**
      * @var array<string, string>

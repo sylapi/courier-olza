@@ -9,7 +9,7 @@ use OlzaApiClient\Entities\Helpers\HeaderEntity;
 use OlzaApiClient\Entities\Request\ApiBatchRequest;
 use Sylapi\Courier\Olza\ApiClient\Client as OlzaClient;
 
-class OlzaSession
+class Session
 {
     private $parameters;
     private $request;
@@ -17,7 +17,7 @@ class OlzaSession
     private $client;
     private $httpClient;
 
-    public function __construct(OlzaParameters $parameters, HttpClient $httpClient)
+    public function __construct(Parameters $parameters, HttpClient $httpClient)
     {
         $this->parameters = $parameters;
         $this->httpClient = $httpClient;
@@ -27,7 +27,7 @@ class OlzaSession
         $this->header = null;
     }
 
-    public function parameters(): OlzaParameters
+    public function parameters(): Parameters
     {
         return $this->parameters;
     }

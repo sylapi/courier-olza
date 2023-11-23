@@ -4,23 +4,23 @@ namespace Sylapi\Courier\Olza\Tests\Integration;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Contracts\Response;
-use Sylapi\Courier\Olza\OlzaCourierCreateShipment;
-use Sylapi\Courier\Olza\OlzaParcel;
-use Sylapi\Courier\Olza\OlzaReceiver;
-use Sylapi\Courier\Olza\OlzaSender;
-use Sylapi\Courier\Olza\OlzaShipment;
-use Sylapi\Courier\Olza\Tests\Helpers\OlzaSessionTrait;
+use Sylapi\Courier\Olza\CourierCreateShipment;
+use Sylapi\Courier\Olza\Parcel;
+use Sylapi\Courier\Olza\Receiver;
+use Sylapi\Courier\Olza\Sender;
+use Sylapi\Courier\Olza\Shipment;
+use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
-class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
+class CourierCreateShipmentTest extends PHPUnitTestCase
 {
-    use OlzaSessionTrait;
+    use SessionTrait;
 
     private function getShipmentMock()
     {
-        $shipmentMock = $this->createMock(OlzaShipment::class);
-        $senderMock = $this->createMock(OlzaSender::class);
-        $receiverMock = $this->createMock(OlzaReceiver::class);
-        $parcelMock = $this->createMock(OlzaParcel::class);
+        $shipmentMock = $this->createMock(Shipment::class);
+        $senderMock = $this->createMock(Sender::class);
+        $receiverMock = $this->createMock(Receiver::class);
+        $parcelMock = $this->createMock(Parcel::class);
 
         $shipmentMock->method('getSender')->willReturn($senderMock);
         $shipmentMock->method('getReceiver')->willReturn($receiverMock);
@@ -33,7 +33,7 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
 
     public function testCreateShipmentSuccess(): void
     {
-        $olzaCourierCreateShipment = new OlzaCourierCreateShipment(
+        $olzaCourierCreateShipment = new CourierCreateShipment(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierCreateShipmentSuccess.json']
             )
@@ -49,7 +49,7 @@ class OlzaCourierCreateShipmentTest extends PHPUnitTestCase
 
     public function testCreateShipmentFailure(): void
     {
-        $olzaCourierCreateShipment = new OlzaCourierCreateShipment(
+        $olzaCourierCreateShipment = new CourierCreateShipment(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierCreateShipmentFailure.json']
             )

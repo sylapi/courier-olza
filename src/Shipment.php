@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza;
 
 use Rakit\Validation\Validator;
-use Sylapi\Courier\Abstracts\Shipment;
+use Sylapi\Courier\Abstracts\Shipment as ShipmentAbstract;
 
-class OlzaShipment extends Shipment
+class Shipment extends ShipmentAbstract
 {
     public function getQuantity(): int
     {

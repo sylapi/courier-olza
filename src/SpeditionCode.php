@@ -6,7 +6,7 @@ namespace Sylapi\Courier\Olza;
 
 use Sylapi\Courier\Abstracts\Enum;
 
-class OlzaSpeditionCode extends Enum
+class SpeditionCode extends Enum
 {
     const GLS = 'GLS'; // GLS
     const CP = 'CP'; // Poczta Czeska - paczka polecona

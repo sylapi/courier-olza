@@ -6,7 +6,7 @@ namespace Sylapi\Courier\Olza\Helpers;
 
 use ArrayObject;
 
-class OlzaApiErrorsHelper
+class ApiErrorsHelper
 {
     public static function hasErrors(ArrayObject $errors): bool
     {

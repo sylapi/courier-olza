@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza;
 
 use Rakit\Validation\Validator;
-use Sylapi\Courier\Abstracts\Receiver;
+use Sylapi\Courier\Abstracts\Receiver as ReceiverAbstract;
 
-class OlzaReceiver extends Receiver
+class Receiver extends ReceiverAbstract
 {
     public function validate(): bool
     {

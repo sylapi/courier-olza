@@ -6,7 +6,7 @@ namespace Sylapi\Courier\Olza\Helpers;
 
 use Sylapi\Courier\Exceptions\ValidateException;
 
-class OlzaValidateErrorsHelper
+class ValidateErrorsHelper
 {
     public static function hasErrors(array $errors): bool
     {
