@@ -2,12 +2,13 @@
 
 namespace Sylapi\Courier\Olza\Tests\Helpers;
 
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Sylapi\Courier\Olza\Parameters;
 use Sylapi\Courier\Olza\Session;
+use GuzzleHttp\Handler\MockHandler;
+use Sylapi\Courier\Olza\Parameters;
+use GuzzleHttp\Client as HttpClient;
+use Sylapi\Courier\Olza\Entities\Credentials;
 
 trait SessionTrait
 {
@@ -28,16 +29,14 @@ trait SessionTrait
         $handlerStack = HandlerStack::create($mock);
         $client = new HttpClient(['handler' => $handlerStack]);
 
-        $parameters = Parameters::create([
-            'login'           => 'login',
-            'password'        => 'password',
-            'sandbox'         => true,
-            'requestLanguage' => 'pl',
-            'labelType'       => 'A4',
-            'speditionCode'   => 'GLS',
-            'shipmentType'    => 'WAREHOUSE',
-        ]);
+        $credentials = new Credentials();
+        $credentials
+            ->setLanguageCode('pl')
+            ->setLogin('login')
+            ->setPassword('password')
+            ->setSandbox(true)
+            ;
 
-        return  new Session($parameters, $client);
+        return  new Session($credentials, $client);
     }
 }
