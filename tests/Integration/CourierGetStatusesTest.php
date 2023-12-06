@@ -2,9 +2,10 @@
 
 namespace Sylapi\Courier\Olza\Tests\Integration;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Enums\StatusType;
 use Sylapi\Courier\Olza\CourierGetStatuses;
+use Sylapi\Courier\Exceptions\TransportException;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
 class CourierGetStatusesTest extends PHPUnitTestCase
@@ -31,8 +32,7 @@ class CourierGetStatusesTest extends PHPUnitTestCase
             )
         );
 
-        $response = $olzaCourierGetStatuses->getStatus('123');
-        $this->assertEquals($response, StatusType::APP_RESPONSE_ERROR->value);
-        $this->assertTrue($response->hasErrors());
+        $this->expectException(TransportException::class);
+        $olzaCourierGetStatuses->getStatus('123');
     }
 }

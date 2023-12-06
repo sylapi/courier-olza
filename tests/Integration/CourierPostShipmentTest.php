@@ -2,10 +2,11 @@
 
 namespace Sylapi\Courier\Olza\Tests\Integration;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Contracts\Response;
-use Sylapi\Courier\Olza\Booking;
+use Sylapi\Courier\Olza\Responses\Parcel as ParcelResponse;
+use Sylapi\Courier\Olza\Entities\Booking;
 use Sylapi\Courier\Olza\CourierPostShipment;
+use Sylapi\Courier\Exceptions\TransportException;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
 class CourierPostShipmentTest extends PHPUnitTestCase
@@ -33,13 +34,10 @@ class CourierPostShipmentTest extends PHPUnitTestCase
         $booking = $this->getBookingMock($shipmentId);
         $response = $olzaCourierPostShipment->postShipment($booking);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertObjectHasProperty('shipmentId', $response);
-        $this->assertEquals($response->shipmentId, $shipmentId);
-        $this->assertObjectHasProperty('trackingId', $response);
-        $this->assertEquals($response->trackingId, '00014459331');
-        $this->assertObjectHasProperty('trackingBarcode', $response);
-        $this->assertEquals($response->trackingBarcode, '000144593313');
+        $this->assertInstanceOf(ParcelResponse::class, $response);
+        $this->assertEquals($response->getShipmentId(), $shipmentId);
+        $this->assertEquals($response->getTrackingId(), '00014459331');
+        $this->assertEquals($response->getTrackingBarcode(), '000144593313');
     }
 
     public function testPostShipmentFailure(): void
@@ -51,8 +49,8 @@ class CourierPostShipmentTest extends PHPUnitTestCase
         );
 
         $shipmentId = '123';
+        $this->expectException(TransportException::class);
         $booking = $this->getBookingMock($shipmentId);
-        $response = $olzaCourierPostShipment->postShipment($booking);
-        $this->assertTrue($response->hasErrors());
+        $olzaCourierPostShipment->postShipment($booking);
     }
 }

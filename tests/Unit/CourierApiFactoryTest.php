@@ -4,44 +4,40 @@ namespace Sylapi\Courier\Olza\Tests\Unit;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Courier;
-use Sylapi\Courier\Olza\Booking;
+use Sylapi\Courier\Olza\Entities\Booking;
 use Sylapi\Courier\Olza\CourierApiFactory;
-use Sylapi\Courier\Olza\Parameters;
-use Sylapi\Courier\Olza\Parcel;
-use Sylapi\Courier\Olza\Receiver;
-use Sylapi\Courier\Olza\Sender;
+use Sylapi\Courier\Olza\Entities\Parcel;
+use Sylapi\Courier\Olza\Entities\Receiver;
+use Sylapi\Courier\Olza\Entities\Sender;
 use Sylapi\Courier\Olza\Session;
 use Sylapi\Courier\Olza\SessionFactory;
-use Sylapi\Courier\Olza\Shipment;
+use Sylapi\Courier\Olza\Entities\Shipment;
+use Sylapi\Courier\Olza\Entities\Credentials;
 
 class CourierApiFactoryTest extends PHPUnitTestCase
 {
-    /**
-     * @var array<string,mixed>
-     */
-    private $parameters = [
-        'login'           => 'login',
-        'password'        => 'password',
-        'sandbox'         => true,
-        'requestLanguage' => 'pl',
-        'labelType'       => 'A4',
-        'speditionCode'   => 'GLS',
-        'shipmentType'    => 'WAREHOUSE',
-    ];
-
     public function testOlzaSessionFactory(): void
     {
+        $credentials = new Credentials();
+        $credentials->setLogin('login');
+        $credentials->setPassword('password');
+        $credentials->setSandbox(true);
         $olzaSessionFactory = new SessionFactory();
         $olzaSession = $olzaSessionFactory->session(
-            Parameters::create($this->parameters)
+            $credentials
         );
         $this->assertInstanceOf(Session::class, $olzaSession);
     }
 
     public function testCourierFactoryCreate(): void
     {
+        $credentials = new Credentials();
+        $credentials->setLogin('login');
+        $credentials->setPassword('password');
+        $credentials->setSandbox(true);
+
         $olzaCourierApiFactory = new CourierApiFactory(new SessionFactory());
-        $courier = $olzaCourierApiFactory->create($this->parameters);
+        $courier = $olzaCourierApiFactory->create($credentials);
 
         $this->assertInstanceOf(Courier::class, $courier);
         $this->assertInstanceOf(Booking::class, $courier->makeBooking());

@@ -3,10 +3,10 @@
 namespace Sylapi\Courier\Olza\Tests\Unit;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Olza\Parcel;
-use Sylapi\Courier\Olza\Receiver;
-use Sylapi\Courier\Olza\Sender;
-use Sylapi\Courier\Olza\Shipment;
+use Sylapi\Courier\Olza\Entities\Parcel;
+use Sylapi\Courier\Olza\Entities\Receiver;
+use Sylapi\Courier\Olza\Entities\Sender;
+use Sylapi\Courier\Olza\Entities\Shipment;
 
 class ShipmentTest extends PHPUnitTestCase
 {

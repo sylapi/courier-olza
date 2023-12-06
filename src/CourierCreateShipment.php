@@ -52,8 +52,8 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
 
         $response->setResponse($shipment);
-        $response->setReferenceId($shipment->getApiCustomRef());
-        $response->setShipmentId($shipment->getShipmentId());
+        $response->setReferenceId((string) $shipment->getApiCustomRef());
+        $response->setShipmentId((string) $shipment->getShipmentId());
 
         return $response;
     }

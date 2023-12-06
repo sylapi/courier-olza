@@ -58,8 +58,9 @@ class CourierGetLabels implements GetLabelsCourierContract
         $labelsEntity = new GetLabelsEnity();
         $labelsEntity->addToListFromArray($shipmentsNumbers);
 
-        $parameters = $this->session->parameters();
-        $labelsEntity->setPageFormat($parameters->getLabelType());
+        // $parameters = $this->session->parameters();
+        // $labelsEntity->setPageFormat($parameters->getLabelType());
+        $labelsEntity->setPageFormat('A4');
 
         return $labelsEntity;
     }

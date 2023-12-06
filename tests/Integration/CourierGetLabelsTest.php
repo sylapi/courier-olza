@@ -2,9 +2,10 @@
 
 namespace Sylapi\Courier\Olza\Tests\Integration;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Contracts\Label;
 use Sylapi\Courier\Olza\CourierGetLabels;
+use Sylapi\Courier\Exceptions\TransportException;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
 class CourierGetLabelsTest extends PHPUnitTestCase
@@ -31,9 +32,7 @@ class CourierGetLabelsTest extends PHPUnitTestCase
             )
         );
 
-        $response = $olzaCourierGetLabels->getLabel('123');
-        $this->assertInstanceOf(Label::class, $response);
-        $this->assertTrue($response->hasErrors());
-        $this->assertInstanceOf(\Throwable::class, $response->getFirstError());
+        $this->expectException(TransportException::class);
+        $olzaCourierGetLabels->getLabel('123');
     }
 }
