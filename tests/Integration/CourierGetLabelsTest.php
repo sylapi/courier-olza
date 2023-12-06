@@ -6,6 +6,7 @@ use Sylapi\Courier\Contracts\Label;
 use Sylapi\Courier\Olza\CourierGetLabels;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Sylapi\Courier\Olza\Entities\LabelType;
 use Sylapi\Courier\Olza\Tests\Helpers\SessionTrait;
 
 class CourierGetLabelsTest extends PHPUnitTestCase
@@ -19,8 +20,8 @@ class CourierGetLabelsTest extends PHPUnitTestCase
                 [__DIR__.'/Mock/OlzaCourierGetLabelsSuccess.json']
             )
         );
-
-        $response = $olzaCourierGetLabels->getLabel('123');
+        $labelTypeMock = $this->createMock(LabelType::class);
+        $response = $olzaCourierGetLabels->getLabel('123',$labelTypeMock);
         $this->assertEquals($response, 'JVBERi0xLjcKOCAwIG9iago8PCAv');
     }
 
@@ -33,6 +34,7 @@ class CourierGetLabelsTest extends PHPUnitTestCase
         );
 
         $this->expectException(TransportException::class);
-        $olzaCourierGetLabels->getLabel('123');
+        $labelTypeMock = $this->createMock(LabelType::class);
+        $olzaCourierGetLabels->getLabel('123',$labelTypeMock);
     }
 }

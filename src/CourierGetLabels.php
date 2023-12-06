@@ -12,6 +12,8 @@ use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
 use Sylapi\Courier\Olza\Responses\Label as LabelResponse;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\CourierGetLabels as GetLabelsCourierContract;
+use Sylapi\Courier\Contracts\LabelType as LabelTypeContract;
+use Sylapi\Courier\Olza\Entities\LabelType;
 
 class CourierGetLabels implements GetLabelsCourierContract
 {
@@ -22,10 +24,10 @@ class CourierGetLabels implements GetLabelsCourierContract
         $this->session = $session;
     }
 
-    public function getLabel(string $shipmentId): ResponseContract
+    public function getLabel(string $shipmentId, LabelTypeContract $labelType): ResponseContract
     {
         try {
-            $apiResponse = $this->getApiBatchResponse([$shipmentId]);
+            $apiResponse = $this->getApiBatchResponse([$shipmentId], $labelType);
         } catch (\Exception $e) {
             throw new TransportException($e->getMessage(), $e->getCode());
         }
@@ -37,12 +39,12 @@ class CourierGetLabels implements GetLabelsCourierContract
         return new LabelResponse($apiResponse->getDataStream()->getData());
     }
 
-    private function getApiBatchResponse(array $shipmentsNumbers): ApiBatchResponse
+    private function getApiBatchResponse(array $shipmentsNumbers, LabelTypeContract $labelType): ApiBatchResponse
     {
         $apiClient = $this->session->client();
         $request = $this->session
                         ->request()
-                        ->setPayloadFromHelper($this->getLabelsEntity($shipmentsNumbers));
+                        ->setPayloadFromHelper($this->getLabelsEntity($shipmentsNumbers, $labelType));
 
         try {
             $apiResponse = $apiClient->getLabels($request);
@@ -53,14 +55,11 @@ class CourierGetLabels implements GetLabelsCourierContract
         return $apiResponse;
     }
 
-    private function getLabelsEntity(array $shipmentsNumbers): GetLabelsEnity
+    private function getLabelsEntity(array $shipmentsNumbers, LabelTypeContract $labelType): GetLabelsEnity
     {
         $labelsEntity = new GetLabelsEnity();
         $labelsEntity->addToListFromArray($shipmentsNumbers);
-
-        // $parameters = $this->session->parameters();
-        // $labelsEntity->setPageFormat($parameters->getLabelType());
-        $labelsEntity->setPageFormat('A4');
+        $labelsEntity->setPageFormat($labelType->getLabelType());
 
         return $labelsEntity;
     }
