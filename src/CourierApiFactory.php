@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza;
 
 use Sylapi\Courier\Courier;
+use Sylapi\Courier\Contracts\Credentials;
 
 class CourierApiFactory
 {
@@ -15,13 +16,10 @@ class CourierApiFactory
         $this->olzaSessionFactory = $olzaSessionFactory;
     }
 
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    public function create(array $parameters): Courier
+    public function create(Credentials $credentials): Courier
     {
         $session = $this->olzaSessionFactory
-                    ->session(Parameters::create($parameters));
+                    ->session($credentials);
 
         return new Courier(
             new CourierCreateShipment($session),
@@ -32,7 +30,10 @@ class CourierApiFactory
             new CourierMakeParcel(),
             new CourierMakeReceiver(),
             new CourierMakeSender(),
-            new CourierMakeBooking()
+            new CourierMakeService(),
+            new CourierMakeOptions(),
+            new CourierMakeBooking(),
+            new CourierMakeLabelType(),
         );
     }
 }

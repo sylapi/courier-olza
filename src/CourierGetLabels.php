@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
+use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
+use Sylapi\Courier\Exceptions\TransportException;
 use OlzaApiClient\Entities\Helpers\GetLabelsEnity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
+use Sylapi\Courier\Olza\Responses\Label as LabelResponse;
+use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\CourierGetLabels as GetLabelsCourierContract;
-use Sylapi\Courier\Contracts\Label as LabelContract;
-use Sylapi\Courier\Entities\Label;
-use Sylapi\Courier\Exceptions\TransportException;
-use Sylapi\Courier\Helpers\ResponseHelper;
-use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
 
 class CourierGetLabels implements GetLabelsCourierContract
 {
@@ -22,26 +22,19 @@ class CourierGetLabels implements GetLabelsCourierContract
         $this->session = $session;
     }
 
-    public function getLabel(string $shipmentId): LabelContract
+    public function getLabel(string $shipmentId): ResponseContract
     {
         try {
             $apiResponse = $this->getApiBatchResponse([$shipmentId]);
         } catch (\Exception $e) {
-            $label = new Label(null);
-            ResponseHelper::pushErrorsToResponse($label, [$e]);
-
-            return $label;
+            throw new TransportException($e->getMessage(), $e->getCode());
         }
 
         if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $label = new Label(null);
-            $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
-            ResponseHelper::pushErrorsToResponse($label, $errors);
-
-            return $label;
+            throw new TransportException(ValidateErrorsHelper::getError(ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList())));
         }
 
-        return new Label($apiResponse->getDataStream()->getData());
+        return new LabelResponse($apiResponse->getDataStream()->getData());
     }
 
     private function getApiBatchResponse(array $shipmentsNumbers): ApiBatchResponse

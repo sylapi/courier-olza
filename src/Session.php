@@ -5,81 +5,75 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza;
 
 use GuzzleHttp\Client as HttpClient;
+use Sylapi\Courier\Olza\Entities\Credentials;
 use OlzaApiClient\Entities\Helpers\HeaderEntity;
 use OlzaApiClient\Entities\Request\ApiBatchRequest;
 use Sylapi\Courier\Olza\ApiClient\Client as OlzaClient;
 
 class Session
 {
-    private $parameters;
+    private $credentials;
     private $request;
     private $header;
     private $client;
     private $httpClient;
 
-    public function __construct(Parameters $parameters, HttpClient $httpClient)
+    public function __construct(Credentials $credentials, HttpClient $httpClient)
     {
-        $this->parameters = $parameters;
+        $this->credentials = $credentials;
         $this->httpClient = $httpClient;
-        $this->initParameters();
         $this->client = null;
         $this->request = null;
         $this->header = null;
     }
 
-    public function parameters(): Parameters
-    {
-        return $this->parameters;
-    }
-
-    private function initParameters(): void
-    {
-        $this->parameters()->requestLanguage = $this->parameters()->requestLanguage ?? HeaderEntity::LANG_PL;
-    }
-
     public function client(): OlzaClient
     {
         if (!$this->client) {
-            $this->initializeSession();
+            $this->client = $this->initializeSession();
         }
 
         return $this->client;
     }
 
-    private function initializeSession(): void
+    private function initializeSession(): OlzaClient
     {
         $this->client = new OlzaClient($this->httpClient);
+        return $this->client;
     }
 
     public function request(): ApiBatchRequest
     {
         if (!$this->request) {
-            $this->initializeRequest();
+            $this->request = $this->initializeRequest();
         }
 
         return $this->request;
     }
 
-    private function initializeRequest(): void
+    private function initializeRequest(): ApiBatchRequest
     {
         $apiRequest = new ApiBatchRequest();
         $this->request = $apiRequest->setHeaderFromHelper($this->header());
+        return $this->request;
     }
 
     public function header(): HeaderEntity
     {
         if (!$this->header) {
-            $this->initializeHeader();
+            $this->header = $this->initializeHeader();
         }
 
         return $this->header;
     }
 
-    private function initializeHeader(): void
+    private function initializeHeader(): HeaderEntity
     {
         $header = new HeaderEntity();
-        $header->setApiUser($this->parameters()->login);
-        $header->setApiPassword($this->parameters()->password);
-        $this->header = $header->setLanguage($this->parameters()->requestLanguage);
+        $header->setApiUser($this->credentials->getLogin());
+        $header->setApiPassword($this->credentials->getPassword());
+        $this->header = $header->setLanguage($this->credentials->getLanguageCode());
+
+        return $this->header;
     }
 }

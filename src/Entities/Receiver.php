@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sylapi\Courier\Olza;
+namespace Sylapi\Courier\Olza\Entities;
 
 use Rakit\Validation\Validator;
 use Sylapi\Courier\Abstracts\Receiver as ReceiverAbstract;

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
+use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
+use Sylapi\Courier\Exceptions\TransportException;
 use OlzaApiClient\Entities\Helpers\GetStatusesEntity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
+use Sylapi\Courier\Contracts\Response as ResponseContract;
+use Sylapi\Courier\Olza\Responses\Status as StatusResponse;
 use Sylapi\Courier\Contracts\CourierGetStatuses as CourierGetStatusesContract;
-use Sylapi\Courier\Contracts\Status as StatusContract;
-use Sylapi\Courier\Entities\Status;
-use Sylapi\Courier\Enums\StatusType;
-use Sylapi\Courier\Exceptions\TransportException;
-use Sylapi\Courier\Helpers\ResponseHelper;
-use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
+
 
 class CourierGetStatuses implements CourierGetStatusesContract
 {
@@ -23,29 +23,23 @@ class CourierGetStatuses implements CourierGetStatusesContract
         $this->session = $session;
     }
 
-    public function getStatus(string $shipmentId): StatusContract
+    public function getStatus(string $shipmentId): ResponseContract
     {
         try {
             $apiResponse = $this->getApiBatchResponse([$shipmentId]);
         } catch (\Exception $e) {
-            $status = new Status(StatusType::APP_RESPONSE_ERROR->value);
-            ResponseHelper::pushErrorsToResponse($status, [$e]);
-
-            return $status;
+            throw new TransportException($e->getMessage(), $e->getCode());
         }
 
         if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $status = new Status(StatusType::APP_RESPONSE_ERROR->value);
-            $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
-            ResponseHelper::pushErrorsToResponse($status, $errors);
-
-            return $status;
+            throw new TransportException(ValidateErrorsHelper::getError(ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList())));
         }
 
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
-        return new Status((string) new StatusTransformer((string) $parcel->getParcelStatus()));
+
+        return new StatusResponse((string) new StatusTransformer((string) $parcel->getParcelStatus()));
     }
 
     private function getStatusesEntity(array $shipmentsNumbers): GetStatusesEntity

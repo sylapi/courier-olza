@@ -9,12 +9,17 @@ use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\Shipment;
-use Sylapi\Courier\Entities\Response;
 use Sylapi\Courier\Exceptions\TransportException;
+use Sylapi\Courier\Exceptions\ValidateException;
 use Sylapi\Courier\Helpers\ReferenceHelper;
-use Sylapi\Courier\Helpers\ResponseHelper;
+use Sylapi\Courier\Olza\Responses\Shipment as ShipmentResponse;
 use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
 use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
+use Sylapi\Courier\Olza\Services\COD;
+use Sylapi\Courier\Olza\Services\PickupPoint;
+
+
+
 
 class CourierCreateShipment implements CourierCreateShipmentContract
 {
@@ -27,33 +32,28 @@ class CourierCreateShipment implements CourierCreateShipmentContract
 
     public function createShipment(Shipment $shipment): ResponseContract
     {
-        $response = new Response();
+        $response = new ShipmentResponse();
+        
         if (!$shipment->validate()) {
-            $errors = ValidateErrorsHelper::toArrayExceptions($shipment->getErrors());
-            ResponseHelper::pushErrorsToResponse($response, $errors);
-
-            return $response;
+            throw new ValidateException('Invalid Shipment: ' . ValidateErrorsHelper::getError($shipment->getErrors()));
         }
 
         try {
             $apiResponse = $this->getApiBatchResponse($shipment);
+            $response->setRequest($apiResponse);
         } catch (\Exception $e) {
-            ResponseHelper::pushErrorsToResponse($response, [$e]);
-
-            return $response;
+            throw new TransportException($e->getMessage(), $e->getCode());
         }
 
         if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
-            ResponseHelper::pushErrorsToResponse($response, $errors);
-
-            return $response;
+            throw new TransportException(ValidateErrorsHelper::getError(ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList())));
         }
 
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
 
-        $response->referenceId = $shipment->getApiCustomRef();
-        $response->shipmentId = $shipment->getShipmentId();
+        $response->setResponse($shipment);
+        $response->setReferenceId($shipment->getApiCustomRef());
+        $response->setShipmentId($shipment->getShipmentId());
 
         return $response;
     }
@@ -76,14 +76,14 @@ class CourierCreateShipment implements CourierCreateShipmentContract
 
     private function getNewShipmentEnity(Shipment $shipment): NewShipmentEnity
     {
-        $parameters = $this->session->parameters();
+        $options = $shipment->getOptions();
 
         $newShipmentEnity = new NewShipmentEnity();
         $newShipmentEnity = $newShipmentEnity->setApiCustomRef(ReferenceHelper::generate())
             ->setSenderCountry($shipment->getSender()->getCountryCode())
             ->setRecipientCountry($shipment->getReceiver()->getCountryCode())
-            ->setSpeditionCode($parameters->speditionCode)
-            ->setShipmentType($parameters->shipmentType)
+            ->setSpeditionCode($options->get('speditionCode'))
+            ->setShipmentType($options->get('shipmentType')) 
             ->setRecipientFirstname($shipment->getReceiver()->getFirstName())
             ->setRecipientSurname($shipment->getReceiver()->getSurname())
             ->setRecipientAddress($shipment->getReceiver()->getAddress())
@@ -97,27 +97,25 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             ->setWeight($shipment->getWeight())
             ->setShipmentDescription($shipment->getContent());
 
-        if ($parameters->hasProperty('pickupPlaceId')) {
-            $newShipmentEnity = $newShipmentEnity->setPickupPlaceId($parameters->pickupPlaceId);
-        }
 
-        if ($parameters->hasProperty('cod')
-            && is_array($parameters->cod)
-            && isset($parameters->cod['codAmount'])
-            && isset($parameters->cod['codReference'])
-        ) {
-            $newShipmentEnity = $newShipmentEnity->setCodReference($parameters->cod['codReference'])
-                                    ->setCodAmount($parameters->cod['codAmount']);
-        }
+            $services = $shipment->getServices();
+            if($services) {
+                foreach($services as $service) {
+                    if($service instanceof COD) {
+                        $newShipmentEnity = $newShipmentEnity
+                            ->setCodAmount($service->getAmount())
+                            ->setCodReference($service->getReference());
+                    } else if ($service instanceof PickupPoint) {
+                        $newShipmentEnity = $newShipmentEnity
+                            ->setPickupPlaceId($service->getPickupId());
+                    } else {
+                        $serviceData = $service->handle();
+                        $newShipmentEnity = $newShipmentEnity->addService($serviceData['code'], $serviceData['value']);
+                    }
+                }
 
-        if ($parameters->hasProperty('services')
-            && is_array($parameters->services)
-        ) {
-            foreach ($parameters->services as $serviceKey => $serviceValue) {
-                $newShipmentEnity = $newShipmentEnity->addService($serviceKey, $serviceValue);
             }
-        }
-
+        
         return $newShipmentEnity;
     }
 }

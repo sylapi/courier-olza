@@ -4,34 +4,29 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use Sylapi\Courier\Olza\Parameters;
+
 use GuzzleHttp\Client as HttpClient;
 use Sylapi\Courier\Olza\ApiClient\Services\Transport;
+use Sylapi\Courier\Olza\Entities\Credentials;
 
 class SessionFactory
 {
     private $sessions = [];
 
-    /**
-     * @var null|Parameters<string,mixed>
-     */
-    private $parameters;
-
     //These constants can be extracted into injected configuration
     const API_LIVE = 'https://panel.olzalogistic.com';
     const API_SANDBOX = 'https://test.panel.olzalogistic.com';
 
-    public function session(Parameters $parameters): Session
+    public function session(Credentials $credentials): Session
     {
-        $this->parameters = $parameters;
-        $this->parameters->apiUrl = ($this->parameters->sandbox) ? self::API_SANDBOX : self::API_LIVE;
+        $apiUrl = $credentials->isSandbox() ? self::API_SANDBOX : self::API_LIVE;
 
-        $key = sha1($this->parameters->apiUrl.':'.$this->parameters->login.':'.$this->parameters->password);
+        $key = sha1( $apiUrl.':'.$credentials->getLogin().':'.$credentials->getPassword());
 
         $httpClient = new HttpClient([
-            'base_uri' => $this->parameters->apiUrl.Transport::getApiCallUri(),
+            'base_uri' => $apiUrl.Transport::getApiCallUri(),
         ]);
 
-        return (isset($this->sessions[$key])) ? $this->sessions[$key] : ($this->sessions[$key] = new Session($this->parameters, $httpClient));
+        return (isset($this->sessions[$key])) ? $this->sessions[$key] : ($this->sessions[$key] = new Session($credentials, $httpClient));
     }
 }

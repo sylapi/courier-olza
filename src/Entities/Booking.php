@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Sylapi\Courier\Olza;
+namespace Sylapi\Courier\Olza\Entities;
 
 use Rakit\Validation\Validator;
-use Sylapi\Courier\Abstracts\Parcel as ParcelAbstract;
+use Sylapi\Courier\Abstracts\Booking as BookingAbstract;
 
-class Parcel extends ParcelAbstract
+class Booking extends BookingAbstract
 {
+
     public function validate(): bool
     {
         $rules = [
-            'weight' => 'required|numeric|min:0.01',
+            'shipmentId' => 'required',
         ];
         $data = [
-            'weight' => $this->getWeight(),
+            'shipmentId' => $this->getShipmentId(),
         ];
 
         $validator = new Validator();

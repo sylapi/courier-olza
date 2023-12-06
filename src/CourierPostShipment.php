@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza;
 
-use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
-use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\Booking;
-use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
-use Sylapi\Courier\Contracts\Response as ResponseContract;
-use Sylapi\Courier\Entities\Response;
-use Sylapi\Courier\Exceptions\TransportException;
-use Sylapi\Courier\Helpers\ResponseHelper;
+
+use Sylapi\Courier\Olza\Responses\Parcel as ParcelResponse;
+use Sylapi\Courier\Exceptions\ValidateException;
 use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
+use Sylapi\Courier\Exceptions\TransportException;
+use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
+use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
+use Sylapi\Courier\Contracts\Response as ResponseContract;
+use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
 
 class CourierPostShipment implements CourierPostShipmentContract
 {
@@ -26,37 +27,32 @@ class CourierPostShipment implements CourierPostShipmentContract
 
     public function postShipment(Booking $booking): ResponseContract
     {
-        $response = new Response();
+        $response = new ParcelResponse();
 
         if (!$booking->validate()) {
-            $errors = ValidateErrorsHelper::toArrayExceptions($response->getErrors());
-            ResponseHelper::pushErrorsToResponse($response, $errors);
-
-            return $response;
+            throw new ValidateException('Invalid Shipment: ' . ValidateErrorsHelper::getError($booking->getErrors()));
         }
 
         try {
             $apiResponse = $this->getApiBatchResponse([$booking->getShipmentId()]);
         } catch (\Exception $e) {
-            ResponseHelper::pushErrorsToResponse($response, [$e]);
-
-            return $response;
+            throw new TransportException($e->getMessage(), $e->getCode());
         }
 
         if (ApiErrorsHelper::hasErrors($apiResponse->getErrorList())) {
-            $errors = ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList());
-            ResponseHelper::pushErrorsToResponse($response, $errors);
-
-            return $response;
+            throw new TransportException(ValidateErrorsHelper::getError(ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList())));
         }
 
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
-        $response->shipmentId = $parcel->getShipmentId();
-        $response->trackingId = $parcel->getSpeditionExternalId();
-        $response->trackingBarcode = $parcel->getSpeditionExternalBarcode();
-        $response->trackingUrl = $parcel->getSpeditionExternalTrackingUrl();
+
+        $response->setResponse($parcel);
+        $response->setShipmentId($parcel->getShipmentId());
+        $response->setTrackingId($parcel->getSpeditionExternalId());
+        $response->setTrackingBarcode($parcel->getSpeditionExternalBarcode());
+        $response->setTrackingUrl($parcel->getSpeditionExternalTrackingUrl());
+
 
         return $response;
     }
