@@ -21,6 +21,8 @@ class SessionFactory
     {
         $apiUrl = $credentials->isSandbox() ? self::API_SANDBOX : self::API_LIVE;
 
+        $credentials->setApiUrl($apiUrl);
+
         $key = sha1( $apiUrl.':'.$credentials->getLogin().':'.$credentials->getPassword());
 
         $httpClient = new HttpClient([

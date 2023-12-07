@@ -11,11 +11,11 @@ use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
 use Sylapi\Courier\Olza\Responses\Label as LabelResponse;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
-use Sylapi\Courier\Contracts\CourierGetLabels as GetLabelsCourierContract;
+use Sylapi\Courier\Contracts\CourierGetLabels as CourierGetLabelsContract;
 use Sylapi\Courier\Contracts\LabelType as LabelTypeContract;
 use Sylapi\Courier\Olza\Entities\LabelType;
 
-class CourierGetLabels implements GetLabelsCourierContract
+class CourierGetLabels implements CourierGetLabelsContract
 {
     private $session;
 
