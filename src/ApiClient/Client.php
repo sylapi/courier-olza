@@ -11,13 +11,11 @@ use Sylapi\Courier\Olza\ApiClient\Services\Transport;
 
 class Client extends OlzaApiClient
 {
-    /**
-     * @var TransportInterface
-     */
-    protected $transport;
+
 
     public function __construct(HttpClient $provider)
     {
+        /** @phpstan-ignore-next-line */
         $this->transport = new Transport($provider);
     }
 }
