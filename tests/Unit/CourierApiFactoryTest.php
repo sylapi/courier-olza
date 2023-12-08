@@ -31,10 +31,11 @@ class CourierApiFactoryTest extends PHPUnitTestCase
 
     public function testCourierFactoryCreate(): void
     {
-        $credentials = new Credentials();
-        $credentials->setLogin('login');
-        $credentials->setPassword('password');
-        $credentials->setSandbox(true);
+        $credentials = [
+            'login' => 'login',
+            'password' => 'password',
+            'sandbox' => true,
+        ];
 
         $olzaCourierApiFactory = new CourierApiFactory(new SessionFactory());
         $courier = $olzaCourierApiFactory->create($credentials);

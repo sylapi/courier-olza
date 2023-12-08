@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Olza;
 
 use Sylapi\Courier\Courier;
-use Sylapi\Courier\Contracts\Credentials;
-
+use Sylapi\Courier\Olza\Entities\Credentials;
 class CourierApiFactory
 {
     private $olzaSessionFactory;
@@ -16,8 +15,10 @@ class CourierApiFactory
         $this->olzaSessionFactory = $olzaSessionFactory;
     }
 
-    public function create(Credentials $credentials): Courier
+    public function create(array $credentials): Courier
     {
+        $credentials = Credentials::from($credentials);
+
         $session = $this->olzaSessionFactory
                     ->session($credentials);
 

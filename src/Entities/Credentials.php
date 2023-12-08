@@ -8,19 +8,17 @@ use Sylapi\Courier\Contracts\Credentials as CredentialsContract;
 use Sylapi\Courier\Abstracts\Credentials as CredentialsAbstract;
 use OlzaApiClient\Entities\Helpers\HeaderEntity;
 
-class Credentials extends CredentialsAbstract implements CredentialsContract
+class Credentials extends CredentialsAbstract
 {
-    private string $languageCode;
-
     public function setLanguageCode(string $languageCode): self
     {
-        $this->languageCode = $languageCode;
+        $this->set('languageCode',  $languageCode);
 
         return $this;
     }
 
     public function getLanguageCode(): string
     {
-        return $this->languageCode ?? HeaderEntity::LANG_PL;
+        return $this->get('languageCode', HeaderEntity::LANG_PL);
     }
 }
