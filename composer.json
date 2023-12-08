@@ -14,12 +14,6 @@
             "name": "Sylapi"
         }
     ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "/Users/dserafinski/Praca/paczki/courier"
-        }
-    ],
     "require": {
         "php": ">=8.2.0",
         "sylapi/courier": "dev-dev-v3",
