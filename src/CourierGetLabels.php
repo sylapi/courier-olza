@@ -35,7 +35,7 @@ class CourierGetLabels implements CourierGetLabelsContract
             throw new TransportException(ValidateErrorsHelper::getError(ApiErrorsHelper::toArrayExceptions($apiResponse->getErrorList())));
         }
 
-        return new LabelResponse($apiResponse->getDataStream()->getData());
+        return new LabelResponse(base64_decode($apiResponse->getDataStream()->getData()));
     }
 
     private function getApiBatchResponse(array $shipmentsNumbers, LabelTypeContract $labelType): ApiBatchResponse
