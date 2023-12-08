@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Olza\Entities;
 
-use Sylapi\Courier\Contracts\Credentials as CredentialsContract;
 use Sylapi\Courier\Abstracts\Credentials as CredentialsAbstract;
 use OlzaApiClient\Entities\Helpers\HeaderEntity;
 
