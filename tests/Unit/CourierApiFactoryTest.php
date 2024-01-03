@@ -22,11 +22,11 @@ class CourierApiFactoryTest extends PHPUnitTestCase
         $credentials->setLogin('login');
         $credentials->setPassword('password');
         $credentials->setSandbox(true);
-        $olzaSessionFactory = new SessionFactory();
-        $olzaSession = $olzaSessionFactory->session(
+        $sessionFactory = new SessionFactory();
+        $session = $sessionFactory->session(
             $credentials
         );
-        $this->assertInstanceOf(Session::class, $olzaSession);
+        $this->assertInstanceOf(Session::class, $session);
     }
 
     public function testCourierFactoryCreate(): void
@@ -37,8 +37,8 @@ class CourierApiFactoryTest extends PHPUnitTestCase
             'sandbox' => true,
         ];
 
-        $olzaCourierApiFactory = new CourierApiFactory(new SessionFactory());
-        $courier = $olzaCourierApiFactory->create($credentials);
+        $courierApiFactory = new CourierApiFactory(new SessionFactory());
+        $courier = $courierApiFactory->create($credentials);
 
         $this->assertInstanceOf(Courier::class, $courier);
         $this->assertInstanceOf(Booking::class, $courier->makeBooking());

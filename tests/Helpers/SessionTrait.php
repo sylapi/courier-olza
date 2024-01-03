@@ -6,7 +6,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Sylapi\Courier\Olza\Session;
 use GuzzleHttp\Handler\MockHandler;
-use Sylapi\Courier\Olza\Parameters;
 use GuzzleHttp\Client as HttpClient;
 use Sylapi\Courier\Olza\Entities\Credentials;
 
