@@ -14,13 +14,13 @@ class CourierGetStatusesTest extends PHPUnitTestCase
 
     public function testGetStatusSuccess(): void
     {
-        $olzaCourierGetStatuses = new CourierGetStatuses(
+        $courierGetStatuses = new CourierGetStatuses(
             $this->getSession(
                 [__DIR__.'/Mock/OlzaCourierGetStatusSuccess.json']
             )
         );
 
-        $response = $olzaCourierGetStatuses->getStatus('123');
+        $response = $courierGetStatuses->getStatus('123');
         $this->assertEquals($response, StatusType::SENT->value);
     }
 
