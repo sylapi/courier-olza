@@ -8,18 +8,18 @@ use Sylapi\Courier\Courier;
 use Sylapi\Courier\Olza\Entities\Credentials;
 class CourierApiFactory
 {
-    private $olzaSessionFactory;
+    private $sessionFactory;
 
-    public function __construct(SessionFactory $olzaSessionFactory)
+    public function __construct(SessionFactory $sessionFactory)
     {
-        $this->olzaSessionFactory = $olzaSessionFactory;
+        $this->sessionFactory = $sessionFactory;
     }
 
     public function create(array $credentials): Courier
     {
         $credentials = Credentials::from($credentials);
 
-        $session = $this->olzaSessionFactory
+        $session = $this->sessionFactory
                     ->session($credentials);
 
         return new Courier(
