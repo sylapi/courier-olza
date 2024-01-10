@@ -38,8 +38,9 @@ class CourierGetStatuses implements CourierGetStatusesContract
         $shipment = $apiResponse->getProcessedList()->getIterator()->current();
         $parcel = $shipment->getParcels()->getFirstParcel();
 
+        $originalStatus = (string) $parcel->getParcelStatus();
 
-        return new StatusResponse((string) new StatusTransformer((string) $parcel->getParcelStatus()));
+        return new StatusResponse((string) new StatusTransformer($originalStatus), $originalStatus);
     }
 
     private function getStatusesEntity(array $shipmentsNumbers): GetStatusesEntity
