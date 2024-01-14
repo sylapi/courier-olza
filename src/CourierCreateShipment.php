@@ -7,7 +7,6 @@ namespace Sylapi\Courier\Olza;
 use OlzaApiClient\Entities\Helpers\NewShipmentEnity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
 use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;
-use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\Shipment;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Exceptions\ValidateException;
@@ -30,7 +29,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $this->session = $session;
     }
 
-    public function createShipment(Shipment $shipment): ResponseContract
+    public function createShipment(Shipment $shipment): ShipmentResponse
     {
         $response = new ShipmentResponse();
         

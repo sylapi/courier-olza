@@ -12,7 +12,7 @@ use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Olza\Responses\Status as StatusResponse;
 use Sylapi\Courier\Contracts\CourierGetStatuses as CourierGetStatusesContract;
-
+use Sylapi\Courier\Responses\Status;
 
 class CourierGetStatuses implements CourierGetStatusesContract
 {
@@ -23,7 +23,7 @@ class CourierGetStatuses implements CourierGetStatusesContract
         $this->session = $session;
     }
 
-    public function getStatus(string $shipmentId): ResponseContract
+    public function getStatus(string $shipmentId): StatusResponse
     {
         try {
             $apiResponse = $this->getApiBatchResponse([$shipmentId]);

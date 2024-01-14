@@ -8,6 +8,7 @@ use Sylapi\Courier\Olza\Helpers\ApiErrorsHelper;
 use Sylapi\Courier\Exceptions\TransportException;
 use OlzaApiClient\Entities\Helpers\GetLabelsEnity;
 use OlzaApiClient\Entities\Response\ApiBatchResponse;
+use PhpParser\Node\Stmt\Label;
 use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
 use Sylapi\Courier\Olza\Responses\Label as LabelResponse;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
@@ -23,7 +24,7 @@ class CourierGetLabels implements CourierGetLabelsContract
         $this->session = $session;
     }
 
-    public function getLabel(string $shipmentId, LabelTypeContract $labelType): ResponseContract
+    public function getLabel(string $shipmentId, LabelTypeContract $labelType): LabelResponse
     {
         try {
             $apiResponse = $this->getApiBatchResponse([$shipmentId], $labelType);

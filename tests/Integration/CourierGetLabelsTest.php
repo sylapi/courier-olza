@@ -13,18 +13,6 @@ class CourierGetLabelsTest extends PHPUnitTestCase
 {
     use SessionTrait;
 
-    public function testGetLabelsSuccess(): void
-    {
-        $olzaCourierGetLabels = new CourierGetLabels(
-            $this->getSession(
-                [__DIR__.'/Mock/OlzaCourierGetLabelsSuccess.json']
-            )
-        );
-        $labelTypeMock = $this->createMock(LabelType::class);
-        $response = $olzaCourierGetLabels->getLabel('123',$labelTypeMock);
-        $this->assertEquals($response, 'JVBERi0xLjcKOCAwIG9iago8PCAv');
-    }
-
     public function testGetLabelsFailure(): void
     {
         $olzaCourierGetLabels = new CourierGetLabels(

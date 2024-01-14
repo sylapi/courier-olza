@@ -15,6 +15,7 @@ use Sylapi\Courier\Olza\Helpers\ValidateErrorsHelper;
 use OlzaApiClient\Entities\Helpers\PostShipmentsEnity;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
+use Sylapi\Courier\Olza\Entities\Parcel;
 
 class CourierPostShipment implements CourierPostShipmentContract
 {
@@ -25,7 +26,7 @@ class CourierPostShipment implements CourierPostShipmentContract
         $this->session = $session;
     }
 
-    public function postShipment(Booking $booking): ResponseContract
+    public function postShipment(Booking $booking): ParcelResponse
     {
         $response = new ParcelResponse();
 
