@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sylapi\Courier\Olza;
+namespace Sylapi\Courier\Olza\Enums;
 
 enum SpeditionCode: string {
     case GLS = 'GLS';
