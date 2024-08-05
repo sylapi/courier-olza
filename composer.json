@@ -18,7 +18,7 @@
         "php": ">=8.2.0",
         "develart-projects/olza-logisctic-api-client": "1.5.*",
         "rakit/validation": "^1.4",
-        "sylapi/courier": "v3.0.0"
+        "sylapi/courier": "v3.0"
     },  
     "require-dev": {
         "phpstan/phpstan": "^1.10",
